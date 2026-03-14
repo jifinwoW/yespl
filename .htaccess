@@ -1,0 +1,9 @@
+# Enable rewrite engine
+RewriteEngine On
+
+# Allow access via domain or direct IP
+RewriteCond %{HTTP_HOST} !^(yespl\.info|www\.yespl\.info|45\.93\.139\.56)$ [NC]
+RewriteRule ^.*$ https://yespl.info%{REQUEST_URI} [R=301,L]
+
+# Optional: handle index.php automatically
+DirectoryIndex index.php index.html

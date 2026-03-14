@@ -1,0 +1,9 @@
+<html>
+<body>
+<form action="import_csv.php" method="post" enctype="multipart/form-data">
+    <label for="csv_file">Select CSV File:</label>
+    <input type="file" name="csv_file" id="csv_file">
+    <button type="submit" name="submit">Upload and Import</button>
+</form>
+</body>
+</html>

@@ -1,0 +1,62 @@
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+logs/*
+*.log
+
+# Cache
+cache/*
+
+# Runtime templates
+templates_c/*
+Smarty/templates_c/*
+
+# Uploads / attachments
+storage/*
+upload/*
+test/upload/*
+
+# User privilege cache
+user_privileges/user_privileges_*.php
+
+# Config with credentials
+config.inc.php
+config.performance.php
+
+# Backup files
+*.bak
+*.backup
+*.old
+*.tmp
+
+# Dependencies
+vendor/
+node_modules/
+
+# IDE
+.vscode/
+.idea/
+
+# Environment
+.env
+.env.local
+
+# Sessions
+sessions/*
+
+# Server logs
+error_log
+
+# Test / coverage
+phpunit.xml
+coverage/
+
+# Generated files
+*.cache
+*.pid
+
+# Exclude archives and database dumps
+*.zip
+*.sql
