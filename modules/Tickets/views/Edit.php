@@ -50,6 +50,7 @@ class Tickets_Edit_View extends Vtiger_Edit_View {
 			$pincode = $helpdeskRecord->column_fields['pincode'];
 			$parent_id = $helpdeskRecord->column_fields['parent_id'];
 			$location_type = $helpdeskRecord->column_fields['location_type'];
+			$amc_id = $recordId; // amc_id is the relate field pointing back to the parent HelpDesk record
 
             // Create a new Ticket instance
             $ticket =  CRMEntity::getInstance('Tickets');
@@ -82,7 +83,8 @@ class Tickets_Edit_View extends Vtiger_Edit_View {
 			$ticket->column_fields['state'] = $state;
 			$ticket->column_fields['pincode'] = $pincode;
 			$ticket->column_fields['parent_id'] = $parent_id;
-			$ticket->column_fields['location_type'] = $location_type; 
+			$ticket->column_fields['location_type'] = $location_type;
+			$ticket->column_fields['amc_id'] = $amc_id; // crmid of parent HelpDesk record
 
             // Ensure the request can carry these values
             $request->set('boid', $ticket->column_fields['boid']);
@@ -113,6 +115,7 @@ class Tickets_Edit_View extends Vtiger_Edit_View {
 			$request->set('pincode', $ticket->column_fields['pincode']);
 			$request->set('account_id', $ticket->column_fields['parent_id']);
 			$request->set('location_type', $ticket->column_fields['location_type']);
+			$request->set('amc_id', $ticket->column_fields['amc_id']);
 	
         }
 
