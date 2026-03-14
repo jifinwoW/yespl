@@ -101,6 +101,7 @@ body > .mCSB_inside > .mCSB_container {
 .main-container {
   position: relative;
   min-height: calc(100vh - 108px);
+  border-bottom: 1px solid #ddd;
 }
 .main-container:before,
 .main-container:after {
@@ -143,7 +144,7 @@ body > .mCSB_inside > .mCSB_container {
     bottom: 0;
     top: 0;
     left: 0;
-    min-height: 100%;
+    /* min-height: 100%; */
     background-color: #2C3B49;
     background: #2C3B49;
   }

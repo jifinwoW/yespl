@@ -121,7 +121,7 @@ body{
     /*color: white;*/
 }
 #modnavigator{
-    margin-top: 30px;
+    margin-top: 28px;
 }
 input, textarea, .inputElement , .form-control{
   border-radius: 4px!important;
@@ -173,6 +173,10 @@ input, textarea, .inputElement , .form-control{
      box-shadow: 0 0 35px 0 rgb(154 161 171 / 15%);
     border-radius: 5px;
     margin-top: 25px;
+}
+.settingsPageDiv .clearfix{
+
+    padding-top: 50px;
 }
 .module-btn{
     padding: 6px 12px!important;
@@ -311,17 +315,20 @@ input, textarea, .inputElement , .form-control{
     box-shadow: 0 0 35px 0 rgb(154 161 171 / 15%)!important;
 }
 .saveButton{
-    color: #11ca6d!important;
+    color: #fff!important;
 }
 .saveButton:hover{
     color: #fff!important;
+}
+.editViewHeader {
+    padding-top: 50px!important;
 }
 .cancelLink{
     color:#f35d5d!important;
     padding: 7px 25px!important;
 }
 .cancelLink:hover{
-    color:#fff!important;
+    color:#f35d5d!important;
 }
 
 .detailViewContainer .content-area, .editViewPageDiv .content-area, .editViewPageDiv.content-area, .editViewPageDiv .reports-content-area {
@@ -751,7 +758,10 @@ thead{
     background: #f5f7fb;
 }
 .modules-menu ul li a > span {
-    display: none !important;
+    /* display: none !important; */
+}
+.modules-menu .custom-module{
+    border: none!important;
 }
 .main-container .sidebar-essentials{
     background-color: white;
