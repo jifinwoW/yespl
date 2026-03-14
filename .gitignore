@@ -16,6 +16,7 @@ Smarty/templates_c/*
 # Uploads / attachments
 storage/*
 upload/*
+test/*
 test/upload/*
 
 # User privilege cache
