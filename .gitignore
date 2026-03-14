@@ -51,7 +51,6 @@ error_log
 
 # Test / coverage
 phpunit.xml
-coverage/
 
 # Generated files
 *.cache
