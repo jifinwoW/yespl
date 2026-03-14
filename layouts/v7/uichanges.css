@@ -174,8 +174,7 @@ input, textarea, .inputElement , .form-control{
     border-radius: 5px;
     margin-top: 25px;
 }
-.settingsPageDiv .clearfix{
-
+.settingsPageDiv .pad40{
     padding-top: 50px;
 }
 .module-btn{

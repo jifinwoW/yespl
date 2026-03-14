@@ -19,7 +19,7 @@
 		{if $DESCRIPTION}<span style="font-size:12px;color: black;"> - &nbsp;{vtranslate({$DESCRIPTION}, $QUALIFIED_MODULE)}</span>{/if}
 		</div>
 		<hr>*}
-		<div class="clearfix">
+		<div class="clearfix pad40">
 			<div class="btn-group pull-right editbutton-container">
 				<button id="updateCompanyDetails" class="btn btn-default ">{vtranslate('LBL_EDIT',$QUALIFIED_MODULE)}</button>
 			</div>
