@@ -11,7 +11,7 @@ $languageStrings = array(
     'LBL_ADD_RECORD' => 'Add Service Cordinator Stock Balance',
     'SINGLE_SCStockBalance' => 'Service Cordinator Stock Balance',
     'LBL_SCB_DETAILS' => 'Stock Balance Details',
-    'SCStockBalance' => 'Service Cordinator Stock Balance',
+    'SCStockBalance' => 'SC Stock Balance',
 
     'Product' => 'Spare Part'
 );

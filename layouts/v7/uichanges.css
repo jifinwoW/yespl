@@ -734,7 +734,7 @@ thead{
     border-bottom: 1px solid #dddddd!important;
 }
 .nav-tabs>li.active>a, .nav-tabs>li.active>a:hover, .nav-tabs>li.active>a:focus {
-    background-color: #ddd!important;
+    /* background-color: #ddd!important; */
 }
 
  .detailViewInfo .fieldLabel {
@@ -817,6 +817,7 @@ thead{
 .app-menu .app-modules-dropdown li:hover{
     background-color: #ddd!important;
 }
+
 
 .settingsgroup div.settingsgroup-accordion:hover a,
 .settingsgroup div.settingsgroup-accordion a:link,
@@ -950,4 +951,48 @@ input:read-only{
 
   .editViewContents .fieldLabel {
     word-break: break-word !important;
+}
+
+/* Custom module PNG icon sizing - match vicon font sizes in all contexts */
+img.module-png-icon {
+    width: 23px;
+    height: 23px;
+    object-fit: contain;
+    vertical-align: middle;
+}
+/* align icon and text in the app menu dropdown */
+.app-menu .app-modules-dropdown li a span {
+    vertical-align: middle;
+}
+/* sidebar modules-menu: match the <i> icon float+size rules and invert to white */
+.modules-menu ul li a img.module-png-icon {
+    float: left;
+    width: 20px;
+    height: 20px;
+    padding-left: 3px;
+    vertical-align: middle;
+    filter: brightness(0) invert(1);
+}
+/* prevent the a > span height:0 + overflow:hidden rule from clipping the img */
+.modules-menu ul li a > span.module-icon {
+    height: auto !important;
+    overflow: visible !important;
+}
+.record-header img.module-png-icon {
+    width: 30px;
+    height: 30px;
+}
+.related-tabs img.module-png-icon,
+#relatedmenuList img.module-png-icon {
+    width: 20px;
+    height: 20px;
+}
+.app-menu .module-icon img.module-png-icon {
+    width: 23px;
+    height: 23px;
+    /* brightness(0)→black, invert(1)→white, brightness(0.333)→#555 */
+    filter: brightness(0) invert(1) brightness(0.333);
+}
+li.tab-item:has(.module-png-icon) {
+    padding: 3px 10px !important;
 }
