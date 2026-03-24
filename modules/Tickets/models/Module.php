@@ -10,6 +10,66 @@
 
 class Tickets_Module_Model extends Vtiger_Module_Model {
 
+	public static function getAmcFieldMappings() {
+		return array(
+			'boid' => 'boid',
+			'sapcode' => 'sapcode',
+			'custcode' => 'custcode',
+			'depocode' => 'depocode',
+			'zone' => 'zone',
+			'serviceengineer' => 'servicecoordintor',
+			'typeofmc' => 'typeofmc',
+			'model' => 'model',
+			'serialno' => 'serialno',
+			'doi' => 'doi',
+			'vendor_id' => 'vendor_id',
+			'service_location' => 'service_location',
+			'connectivity' => 'connectivity',
+			'device_details' => 'device_details',
+			'gyro_type' => 'gyro_type',
+			'gyro_model' => 'gyro_model',
+			'gyro_serialno' => 'gyro_serialno',
+			'ups_details' => 'ups_details',
+			'ups_serialno' => 'ups_serialno',
+			'warranty_month' => 'warranty_month',
+			'warranty_start_date' => 'warranty_start_date',
+			'warranty_end_date' => 'warranty_end_date',
+			'engineer_id' => 'engineer_id',
+			'contact_mobileno' => 'contact_mobileno',
+			'address' => 'address',
+			'city' => 'city',
+			'state' => 'state',
+			'pincode' => 'pincode',
+			'parent_id' => 'account_id',
+			'location_type' => 'location_type',
+		);
+	}
+
+	public static function getAmcFieldValues(Vtiger_Record_Model $amcRecordModel) {
+		$ticketModuleModel = Vtiger_Module_Model::getInstance('Tickets');
+		$ticketFieldModels = $ticketModuleModel->getFields();
+		$mappedFieldValues = array();
+
+		foreach (self::getAmcFieldMappings() as $sourceFieldName => $targetFieldName) {
+			$fieldValue = $amcRecordModel->get($sourceFieldName);
+			$fieldModel = isset($ticketFieldModels[$targetFieldName]) ? $ticketFieldModels[$targetFieldName] : null;
+			$isReferenceField = $fieldModel && $fieldModel->getFieldDataType() === 'reference';
+			$displayValue = '';
+
+			if ($isReferenceField && !empty($fieldValue)) {
+				$displayValue = decode_html(Vtiger_Util_Helper::getRecordName($fieldValue));
+			}
+
+			$mappedFieldValues[$targetFieldName] = array(
+				'value' => $fieldValue,
+				'displayValue' => $displayValue,
+				'isReference' => $isReferenceField,
+			);
+		}
+
+		return $mappedFieldValues;
+	}
+
 	/**
 	 * Function to get the Quick Links for the module
 	 * @param <Array> $linkParams
