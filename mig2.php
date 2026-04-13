@@ -10,26 +10,25 @@ $moduleInstance = null;
 $blockInstance = null;
 $fieldInstance = null;
 $moduleInstance = Vtiger_Module::getInstance('HelpDesk');
-$blockInstance = Vtiger_Block::getInstance('Address Details', $moduleInstance);
+$blockInstance = Vtiger_Block::getInstance('LBL_TICKET_INFORMATION', $moduleInstance);
 if ($blockInstance) {
-    $fieldInstance = Vtiger_Field::getInstance('amc_state', $moduleInstance);
+    $fieldInstance = Vtiger_Field::getInstance('amc_end_date', $moduleInstance);
     if (!$fieldInstance) {
         $fieldInstance = new Vtiger_Field();
-        $fieldInstance->name = 'amc_state';
-        $fieldInstance->label = 'State';
+        $fieldInstance->name = 'amc_end_date';
+        $fieldInstance->label = 'AMC End Date';
         $fieldInstance->table = $moduleInstance->basetable;
-        $fieldInstance->column = 'amc_state';
-        $fieldInstance->uitype = '16';
+        $fieldInstance->column = 'amc_end_date';
+        $fieldInstance->uitype = 5;
         $fieldInstance->presence = '0';
-        $fieldInstance->typeofdata = 'V~O';
-        $fieldInstance->columntype = 'VARCHAR(100)';
+        $fieldInstance->typeofdata = 'D~O';
+        $fieldInstance->columntype = 'DATE';
         $fieldInstance->defaultvalue = NULL;
         $blockInstance->addField($fieldInstance);
-        $fieldInstance->setPicklistValues(array('Assam', 'Bihar', 'Chhattisgarh', 'Goa', 'Gujarat', 'Haryana', 'Himachal Pradesh', 'Jammu & Kashmir', 'Jharkhand', 'Karnataka', 'Kerala', 'Madhya Pradesh', 'Maharashtra', 'Manipur', 'Mizoram', 'New Delhi', 'Odisha', 'Punjab', 'Rajasthan', 'Tamil Nadu', 'Telangana', 'Tripura', 'Uttar Pradesh', 'Uttarakhand', 'West Bengal'));
     } else {
-        echo "field is already Present --- amc_state in HelpDesk Module --- <br>";
+        echo "field is already Present --- amc_end_date in HelpDesk Module --- <br>";
     }
 } else {
-    echo " block does not exits --- Address Details -- <br>";
+    echo " block does not exits --- LBL_TICKET_INFORMATION -- <br>";
 }
 
