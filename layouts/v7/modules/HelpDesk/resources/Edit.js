@@ -12,6 +12,50 @@ Vtiger_Edit_Js("HelpDesk_Edit_Js", {}, {
 	registerBasicEvents: function(container) {
 		this._super(container);
 		this.registerInstallationDateAutoPopulateEvent(container);
+		this.registerEngineerSelectionEvent(container);
+	},
+
+	registerEngineerSelectionEvent: function(container) {
+		var thisInstance = this;
+		container.find('input[name="engineer_id"]').on(Vtiger_Edit_Js.referenceSelectionEvent, function(e, data) {
+			thisInstance.populateEngineerMobileNo(data, container);
+		});
+		container.find('input[name="engineer_id"]').on(Vtiger_Edit_Js.referenceDeSelectionEvent, function() {
+			thisInstance.clearEngineerMobileNo(container);
+		});
+	},
+
+	populateEngineerMobileNo: function(data, container) {
+		var thisInstance = this;
+		if (!data || !data.record) {
+			return;
+		}
+
+		app.request.get({
+			url: 'index.php',
+			data: {
+				module: 'HelpDesk',
+				action: 'GetEngineerMobileNo',
+				record: data.record,
+				source_module: data.source_module
+			}
+		}).then(function(error, response) {
+			if (error !== null || !response || response.success !== true) {
+				return;
+			}
+			var mobileField = container.find('[name="eng_mobileno"]');
+			if (mobileField.length) {
+				mobileField.val(response.result.mobile_no).trigger('change');
+			}
+		}, function() {});
+	},
+
+	clearEngineerMobileNo: function(container) {
+		var mobileField = container.find('[name="eng_mobileno"]');
+		if (!mobileField.length) {
+			return;
+		}
+		mobileField.val('').trigger('change');
 	},
 
 	registerInstallationDateAutoPopulateEvent: function(container) {
