@@ -14,6 +14,7 @@ Vtiger_Edit_Js("HelpDesk_Edit_Js", {}, {
 		this.registerInstallationDateAutoPopulateEvent(container);
 		this.registerEngineerSelectionEvent(container);
 		this.registerGyroEvent(container);
+		this.registerUpsEvent(container);
 	},
 
 	registerEngineerSelectionEvent: function(container) {
@@ -160,21 +161,50 @@ Vtiger_Edit_Js("HelpDesk_Edit_Js", {}, {
 	registerGyroEvent: function(container) {
 		var gyroField = container.find('[name="gyro"]');
 		if (!gyroField.length) return;
-
+		var gyroBlock = container.find('[data-block="Gyro Details"]');
 		var gyroRow = container.find('[name="gyro_serialno"]').closest('tr');
 
 		// Initially hide the row
 		gyroRow.hide();
+		gyroBlock.hide();
 
 		gyroField.on('change', function() {
 			var value = jQuery(this).val();
 			if (value === 'Yes') {
 				gyroRow.show();
+				gyroBlock.show();
 			} else {
 				gyroRow.hide();
+				gyroBlock.hide();
 			}
 		});
 
 		gyroField.trigger('change');
+	},
+
+	registerUpsEvent: function(container) {
+		var upsField = container.find('[name="ups"]');
+		if (!upsField.length) return;
+
+		var upsRowTd = container.find('[name="ups_serialno"]').closest('tr');
+		var UpsBlock = container.find('[data-block="UPS Details"]');
+		
+		
+		// Initially hide the row and the td above
+		upsRowTd.hide();
+		UpsBlock.hide();
+		
+		upsField.on('change', function() {
+			var value = jQuery(this).val();
+			if (value === 'Yes') {
+				upsRowTd.show();
+				UpsBlock.show();	
+			} else {
+				upsRowTd.hide();
+				UpsBlock.hide();
+			}
+		});
+
+		upsField.trigger('change');
 	}
 });
