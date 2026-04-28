@@ -38,6 +38,7 @@ Vtiger_Edit_Js("Tickets_Edit_Js", {}, {
 		this.registerAmcSelectionEvent(container);
 		this.registerAmcDeselectionEvent(container);
 		this.registerInstallationDateAutoPopulateEvent(container);
+		this.registerGyroEvent(container);
 	},
 
 	registerInstallationDateAutoPopulateEvent: function(container) {
@@ -247,5 +248,30 @@ Vtiger_Edit_Js("Tickets_Edit_Js", {}, {
 
 			fieldElement.val('').trigger('change');
 		});
+	},
+
+	registerGyroEvent: function(container) {
+		var gyroField = container.find('[name="gyro"]');
+		if (!gyroField.length) return;
+
+		var serialFieldBlock = container.find('[name="gyro_serialno"]').closest('.fieldBlock');
+		var typeFieldBlock = container.find('[name="gyro_type"]').closest('.fieldBlock');
+
+		// Initially hide the fields
+		serialFieldBlock.hide();
+		typeFieldBlock.hide();
+
+		gyroField.on('change', function() {
+			var value = jQuery(this).val();
+			if (value === 'Yes') {
+				serialFieldBlock.show();
+				typeFieldBlock.show();
+			} else {
+				serialFieldBlock.hide();
+				typeFieldBlock.hide();
+			}
+		});
+
+		gyroField.trigger('change');
 	}
 });

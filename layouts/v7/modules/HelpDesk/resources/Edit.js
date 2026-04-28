@@ -13,6 +13,7 @@ Vtiger_Edit_Js("HelpDesk_Edit_Js", {}, {
 		this._super(container);
 		this.registerInstallationDateAutoPopulateEvent(container);
 		this.registerEngineerSelectionEvent(container);
+		this.registerGyroEvent(container);
 	},
 
 	registerEngineerSelectionEvent: function(container) {
@@ -154,5 +155,26 @@ Vtiger_Edit_Js("HelpDesk_Edit_Js", {}, {
 		this.setDateFieldValue(container, ['warranty_end_date', 'warranty_expire_date'], warrantyEndDate);
 		this.setDateFieldValue(container, ['amc_start_date', 'amcstartdate'], amcStartDate);
 		this.setDateFieldValue(container, ['amc_end_date', 'amcenddate'], amcEndDate);
+	},
+
+	registerGyroEvent: function(container) {
+		var gyroField = container.find('[name="gyro"]');
+		if (!gyroField.length) return;
+
+		var gyroRow = container.find('[name="gyro_serialno"]').closest('tr');
+
+		// Initially hide the row
+		gyroRow.hide();
+
+		gyroField.on('change', function() {
+			var value = jQuery(this).val();
+			if (value === 'Yes') {
+				gyroRow.show();
+			} else {
+				gyroRow.hide();
+			}
+		});
+
+		gyroField.trigger('change');
 	}
 });
