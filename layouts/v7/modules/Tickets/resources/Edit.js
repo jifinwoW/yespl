@@ -251,27 +251,52 @@ Vtiger_Edit_Js("Tickets_Edit_Js", {}, {
 	},
 
 	registerGyroEvent: function(container) {
-		var gyroField = container.find('[name="gyro"]');
+		var gyroField = container.find('[name="ticket_gyro"]');
 		if (!gyroField.length) return;
+		var gyroBlock = container.find('[data-block="Gyro Details"]');
+		var gyroRow = container.find('[name="gyro_serialno"]').closest('tr');
 
-		var serialFieldBlock = container.find('[name="gyro_serialno"]').closest('.fieldBlock');
-		var typeFieldBlock = container.find('[name="gyro_type"]').closest('.fieldBlock');
-
-		// Initially hide the fields
-		serialFieldBlock.hide();
-		typeFieldBlock.hide();
+		// Initially hide the row
+		gyroRow.hide();
+		gyroBlock.hide();
 
 		gyroField.on('change', function() {
 			var value = jQuery(this).val();
 			if (value === 'Yes') {
-				serialFieldBlock.show();
-				typeFieldBlock.show();
+				gyroRow.show();
+				gyroBlock.show();
 			} else {
-				serialFieldBlock.hide();
-				typeFieldBlock.hide();
+				gyroRow.hide();
+				gyroBlock.hide();
 			}
 		});
 
 		gyroField.trigger('change');
+	},
+
+	registerUpsEvent: function(container) {
+		var upsField = container.find('[name="ticket_ups"]');
+		if (!upsField.length) return;
+
+		var upsRowTd = container.find('[name="ups_serialno"]').closest('tr');
+		var UpsBlock = container.find('[data-block="UPS Details"]');
+		
+		
+		// Initially hide the row and the td above
+		upsRowTd.hide();
+		UpsBlock.hide();
+		
+		upsField.on('change', function() {
+			var value = jQuery(this).val();
+			if (value === 'Yes') {
+				upsRowTd.show();
+				UpsBlock.show();	
+			} else {
+				upsRowTd.hide();
+				UpsBlock.hide();
+			}
+		});
+
+		upsField.trigger('change');
 	}
 });
