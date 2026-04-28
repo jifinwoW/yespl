@@ -39,6 +39,7 @@ Vtiger_Edit_Js("Tickets_Edit_Js", {}, {
 		this.registerAmcDeselectionEvent(container);
 		this.registerInstallationDateAutoPopulateEvent(container);
 		this.registerGyroEvent(container);
+		this.registerUpsEvent(container);
 	},
 
 	registerInstallationDateAutoPopulateEvent: function(container) {
