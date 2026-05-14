@@ -9,9 +9,7 @@ class Mobile_WS_UpdateSPRequestByProduct extends Mobile_WS_Controller {
         $stocktransferproductsid = $request->get('product_id');
         $status   = $request->get('status');
 
-        $service_cordinator = "SELECT servicecordinator_id from vtiger_stocktransfer where stocktransferid = ?";
-        $service_cordinator_result = $adb->pquery($service_cordinator, array($spr_id));
-        $service_cordinator_id = $adb->query_result($service_cordinator_result, 0, 'servicecordinator_id');
+        
 
         if (empty($stocktransferproductsid) || empty($status)) {
             $response->setError(101, 'Missing required parameters.');
@@ -19,7 +17,7 @@ class Mobile_WS_UpdateSPRequestByProduct extends Mobile_WS_Controller {
         }
 
        
-        $checkSql = "SELECT stp_status, st_product_id, st_qty FROM vtiger_stocktransferproducts 
+        $checkSql = "SELECT stp_status, st_product_id, st_qty, st_tra_req_id FROM vtiger_stocktransferproducts 
                      INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_stocktransferproducts.stocktransferproductsid
                      WHERE vtiger_crmentity.deleted = 0 AND stocktransferproductsid = ?";
         $checkRes = $adb->pquery($checkSql, [$stocktransferproductsid]);
@@ -32,6 +30,11 @@ class Mobile_WS_UpdateSPRequestByProduct extends Mobile_WS_Controller {
         $product_id = $adb->query_result($checkRes, 0, 'st_product_id');
         $currentStatus = $adb->query_result($checkRes, 0, 'stp_status');
         $qty = $adb->query_result($checkRes, 0, 'st_qty');
+        $sparetransferrequestid = $adb->query_result($checkRes, 0, 'st_tra_req_id');
+
+        $service_cordinator = "SELECT servicecordinator_id from vtiger_stocktransfer where stocktransferid = ?";
+        $service_cordinator_result = $adb->pquery($service_cordinator, array($sparetransferrequestid));
+        $service_cordinator_id = $adb->query_result($service_cordinator_result, 0, 'servicecordinator_id');
 
        
         if ($currentStatus === $status) {
