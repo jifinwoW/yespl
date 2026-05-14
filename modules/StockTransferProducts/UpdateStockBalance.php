@@ -13,15 +13,12 @@ function UpdateStockBalance($entityData) {
     $service_cordinator_result = $adb->pquery($service_cordinator, array($sparerequestid));
     $service_cordinator_id = $adb->query_result($service_cordinator_result, 0, 'servicecordinator_id');
 
-
-    echo "Product ID: $productid, Quantity: $qty, Spare Request ID: $sparerequestid, Engineer ID: $engineerid, Status: $status";
-
     if($status === 'Approved') {
        
         $CheckEngineerStockRecord = "SELECT * from vtiger_engineerstockbalance inner join vtiger_crmentity on vtiger_engineerstockbalance.engineerstockbalanceid = vtiger_crmentity.crmid where sb_product_id = ? and sb_engineer_id = ? and vtiger_crmentity.deleted = 0";
         $CheckEngineerStockRecordResult = $adb->pquery($CheckEngineerStockRecord, array($productid, $engineerid));
         $row = $adb->fetch_array($CheckEngineerStockRecordResult);
-        print_r($row);
+        // print_r($row);
 
         if($CheckEngineerStockRecordResult && $adb->num_rows($CheckEngineerStockRecordResult) > 0) {
             $currentQty = (float) $row['sb_qty'];
