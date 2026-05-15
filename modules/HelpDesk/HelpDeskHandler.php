@@ -20,6 +20,22 @@ class HelpDeskHandler extends VTEventHandler {
 			if ($moduleName == 'HelpDesk') {
 				$ticketId = $entityData->getId();
 				$adb->pquery('UPDATE vtiger_ticketcf SET from_portal=0 WHERE ticketid=?', array($ticketId));
+
+				// Fix: vtiger_crmentity.label is built from ticket_no inside insertIntoCrmEntity(),
+				// which runs BEFORE the auto-number is generated in insertIntoEntityTable().
+				// This causes the label to be blank (shown as '????' in breadcrumbs) for any
+				// save that doesn't come through the normal UI form (e.g. imports).
+				// aftersave.final fires after all DB writes are complete, so ticket_no is available.
+				$ticketNo = $entityData->get('ticket_no');
+				if (!empty($ticketNo)) {
+					$wsId = $entityData->getId();
+					$parts = explode('x', $wsId);
+					$entityId = end($parts);
+					$adb->pquery(
+						'UPDATE vtiger_crmentity SET label = ? WHERE crmid = ? AND (label IS NULL OR label = "" OR label = " ")',
+						array(trim($ticketNo), $entityId)
+					);
+				}
 			}
 		}
 	}
