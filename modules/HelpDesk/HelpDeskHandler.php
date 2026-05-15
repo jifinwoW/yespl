@@ -32,7 +32,7 @@ class HelpDeskHandler extends VTEventHandler {
 					$parts = explode('x', $wsId);
 					$entityId = end($parts);
 					$adb->pquery(
-						'UPDATE vtiger_crmentity SET label = ? WHERE crmid = ? AND (label IS NULL OR label = "" OR label = " ")',
+						'UPDATE vtiger_crmentity SET label = ? WHERE crmid = ?',
 						array(trim($ticketNo), $entityId)
 					);
 				}
