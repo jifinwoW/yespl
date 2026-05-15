@@ -235,19 +235,6 @@ if (isset($_POST['upload']) && isset($_FILES['csv_file'])) {
                     $HelpDesk->save('HelpDesk');
                     $HelpDeskModuleId = $HelpDesk->id;
 
-                    // Fix: VTiger builds the `label` in vtiger_crmentity from `ticket_no` BEFORE
-                    // insertIntoEntityTable() generates the auto-number, so the label is always
-                    // blank/null during import (shows as '????' in breadcrumbs).
-                    // After save(), column_fields['ticket_no'] holds the actual generated value.
-                    // We update the label explicitly here to match.
-                    $importedTicketNo = $HelpDesk->column_fields['ticket_no'];
-                    if (!empty($importedTicketNo)) {
-                        $adb->pquery(
-                            "UPDATE vtiger_crmentity SET label = ? WHERE crmid = ?",
-                            array(trim($importedTicketNo), $HelpDeskModuleId)
-                        );
-                    }
-
                     // Optional Relations
                    // createRelationBetweenAccountAndContact($AccountsModuleId, $ContactsModuleId);
                   //  createRelationBetweenHelpDeskAndContact($ContactsModuleId, $HelpDeskModuleId);

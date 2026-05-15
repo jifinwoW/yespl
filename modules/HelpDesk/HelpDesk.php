@@ -132,6 +132,21 @@ class HelpDesk extends CRMEntity {
 				$on_focus->save_related_module($for_module, $for_crmid, $module, $this->id);
 			}
 		}
+
+		// Fix: vtiger_crmentity.label is built from ticket_no inside insertIntoCrmEntity(),
+		// which runs BEFORE insertIntoEntityTable() generates the auto-number sequence.
+		// During imports (and any non-UI save), ticket_no is empty at that point, so the
+		// label is stored blank and the breadcrumb shows '????'.
+		// save_module() is called after all table inserts are complete, so ticket_no is
+		// now guaranteed to exist — update the label here to correct it.
+		$ticketNo = $this->column_fields['ticket_no'];
+		if (!empty($ticketNo)) {
+			global $adb;
+			$adb->pquery(
+				"UPDATE vtiger_crmentity SET label = ? WHERE crmid = ?",
+				array(trim($ticketNo), $this->id)
+			);
+		}
 	}
 
 	function save_related_module($module, $crmid, $with_module, $with_crmid, $otherParams = array()) {
