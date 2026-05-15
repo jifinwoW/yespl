@@ -102,6 +102,7 @@ class Mobile_WS_CreateSTRequest extends Mobile_WS_Controller
             $spareModel->set('st_qty', $product['qty']);
             $spareModel->set('stp_status', 'Pending');
             $spareModel->set('st_product_id', $product['spare_id']);
+            $spareModel->set('engineer_id', $engineerID);
             $spareModel->set('st_tra_req_id', $StockTransferRecordId);
             $spareModel->save();
 
