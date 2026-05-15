@@ -191,6 +191,14 @@ if (isset($_POST['upload']) && isset($_FILES['csv_file'])) {
 
                     // Create or update HelpDesk record
                     $HelpDesk = CRMEntity::getInstance('HelpDesk');
+                    
+                    // Pre-generate the ticket_no sequence number BEFORE save().
+                    // VTiger builds the `label` column in vtiger_crmentity from `column_fields['ticket_no']`
+                    // inside insertIntoCrmEntity(), which runs BEFORE insertIntoEntityTable() generates the
+                    // auto-number. In the normal UI flow ticket_no is already in the request; during import
+                    // it is empty, so the label is saved as blank (shown as '????' in breadcrumbs).
+                    $nextTicketNo = $HelpDesk->setModuleSeqNumber("increment", "HelpDesk");
+                    $HelpDesk->column_fields['ticket_no'] = $nextTicketNo;
                     $HelpDesk->column_fields['assigned_user_id'] = $current_user->id;
                     $HelpDesk->column_fields['boid'] = $boid;
                     $HelpDesk->column_fields['sapcode'] = $sapcode;
