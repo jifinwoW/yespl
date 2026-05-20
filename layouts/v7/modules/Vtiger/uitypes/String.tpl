@@ -30,4 +30,16 @@
 			data-specific-rules='{ZEND_JSON::encode($FIELD_INFO["validator"])}'
 		{/if}
 		   />
+	{if $MODULE eq 'Engineer' && $FIELD_NAME eq 'engineer_code'}
+		<div style="margin-top:4px;font-size:12px;color:#5f6c80;display:flex;align-items:center;gap:4px;">
+			<i class="fa fa-info-circle" style="font-size:11px;color:#999;"></i>
+			<span>Username for mobile login access.</span>
+		</div>
+	{/if}
+	{if $MODULE eq 'ServiceCordinator' && $FIELD_NAME eq 'sm_code'}
+		<div style="margin-top:4px;font-size:12px;color:#5f6c80;display:flex;align-items:center;gap:4px;">
+			<i class="fa fa-info-circle" style="font-size:11px;color:#999;"></i>
+			<span>Username for mobile login access.</span>
+		</div>
+	{/if}
 {/strip}

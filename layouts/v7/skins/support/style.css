@@ -7927,3 +7927,50 @@ div.flip {
 li.tab-item:has(.custom-module) {
     padding: 5px 10px !important;
 }
+#Engineer_detailView_basicAction_Approve {
+    background-image: linear-gradient(to bottom, #35aa47 0, #35aa47 100%);
+    border: 1px solid #359947;
+    color: #fff !important;
+    text-shadow: none !important;
+}
+
+#Engineer_detailView_basicAction_Approve:hover {
+    background: #218838 !important;
+    border-color: #1e7e34 !important;
+}
+
+#Engineer_detailView_basicAction_Reject {
+    background-image: linear-gradient(to bottom, #d9534f 0, #d9534f 100%);
+    border: 1px solid #d43f3a;
+    color: #fff !important;
+    text-shadow: none !important;
+}
+
+#Engineer_detailView_basicAction_Reject:hover {
+    background: #c82333 !important;
+    border-color: #bd2130 !important;
+}
+
+#ServiceCordinator_detailView_basicAction_Approve{
+    background-image: linear-gradient(to bottom, #35aa47 0, #35aa47 100%);
+    border: 1px solid #359947;
+    color: #fff !important;
+    text-shadow: none !important;
+}
+
+#ServiceCordinator_detailView_basicAction_Approve:hover {
+    background: #218838 !important;
+    border-color: #1e7e34 !important;
+}
+
+#ServiceCordinator_detailView_basicAction_Reject {
+    background-image: linear-gradient(to bottom, #d9534f 0, #d9534f 100%);
+    border: 1px solid #d43f3a;
+    color: #fff !important;
+    text-shadow: none !important;
+}
+
+#ServiceCordinator_detailView_basicAction_Reject:hover {
+    background: #c82333 !important;
+    border-color: #bd2130 !important;
+}
