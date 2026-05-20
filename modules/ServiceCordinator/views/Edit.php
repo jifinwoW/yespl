@@ -13,4 +13,15 @@ Class ServiceCordinator_Edit_View extends Vtiger_Edit_View {
         return $headerCssInstances;
     }
 
+    public function getHeaderScripts(Vtiger_Request $request) {
+        $headerScriptInstances = parent::getHeaderScripts($request);
+
+        $jsFileNames = array(
+            'modules.ServiceCordinator.resources.Edit',
+        );
+
+        $jsScriptInstances = $this->checkAndConvertJsScripts($jsFileNames);
+
+        return array_merge($headerScriptInstances, $jsScriptInstances);
+}
 }
