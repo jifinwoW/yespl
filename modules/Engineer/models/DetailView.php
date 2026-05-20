@@ -96,7 +96,7 @@ class Engineer_DetailView_Model extends Vtiger_DetailView_Model {
 		$recordModel = $this->getRecord();
 		$recordId = $recordModel->getId();
 		$acceptStatus =  $recordModel->get('eng_status');
-		if (empty($acceptStatus)) {
+		if (empty($acceptStatus) || $acceptStatus == 'Pending') {
 			$basicActionLink = array(
 				'linktype' => 'DETAILVIEWBASIC',
 				'linklabel' => 'Approve',
