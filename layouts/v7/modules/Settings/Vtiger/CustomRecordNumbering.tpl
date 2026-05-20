@@ -8,7 +8,7 @@
 *************************************************************************************}
 
 {strip}
-	<div class=" detailViewContainer col-lg-12 col-md-12 col-sm-12">
+	<div class=" detailViewContainer col-lg-12 col-md-12 col-sm-12 paddingTop15">
 		<form id="EditView" method="POST">
 			<div class="blockData">
 				<div class="clearfix">

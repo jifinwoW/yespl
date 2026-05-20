@@ -1242,6 +1242,9 @@ input[type="password"].inputElement {
 .paddingTop15 {
   padding-top: 15px;
 }
+.paddingTop40 {
+  padding-top: 40px;
+}
 .paddingTop5 {
   padding-top: 5px;
 }
