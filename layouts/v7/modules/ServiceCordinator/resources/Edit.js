@@ -1,28 +1,31 @@
 Vtiger_Edit_Js("ServiceCordinator_Edit_Js", {}, {
 
-	registerBasicEvents: function (container) {
-		this._super(container);
-		//this.hide();
-	
-	},
-	hide: function () {
-		$("#ServiceCordinator_editView_fieldName_rejection_reason").parent().parent().parent().parent().addClass("hide");
+    registerRejectReasonToggle : function() {
 
-		$('select').on('change', function () {
-			var name = this.value;
-			if (name == "Rejected") {
-				$("#ServiceCordinator_editView_fieldName_rejection_reason").parent().parent().parent().parent().removeClass("hide");
+        const toggleField = function () {
 
-			}
-			if (name == "Accepted") {
-				$("#ServiceCordinator_editView_fieldName_rejection_reason").parent().parent().parent().parent().addClass("hide");
+            const status = jQuery('[name="sm_status"]').val();
+            const rejectField = jQuery('[name="rejection_reason"]');
 
-			}
-			if (name == "Pending") {
-				$("#ServiceCordinator_editView_fieldName_rejection_reason").parent().parent().parent().parent().addClass("hide");
+            const rejectFieldRow = rejectField.closest('td').closest('tr');
 
-			}
-		})
-	},
+            if (status === 'Rejected') {
+                rejectFieldRow.show();
+            } else {
+                rejectFieldRow.hide();
+                rejectField.val('');
+            }
+        };
+
+        toggleField();
+
+          jQuery(document).on('change', '[name="sm_status"]', function () {
+        toggleField();
+    });
+    },
+
+    registerEvents : function() {
+        this._super();
+        this.registerRejectReasonToggle();
+    }
 });
-
