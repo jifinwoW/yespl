@@ -34,6 +34,10 @@ class Mobile_WS_Login extends Mobile_WS_Controller
 		}
 
 		$current_user->id = $current_user->retrieve_user_id($username);
+		if (empty($current_user->id)) {
+			$response->setError(1501, 'Authentication Failed');
+			return $response;
+		}
 		$current_user->retrieveCurrentUserInfoFromFile($current_user->id);
 
 		$userRole = $current_user->roleid;
