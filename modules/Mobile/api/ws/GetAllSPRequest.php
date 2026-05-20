@@ -25,7 +25,7 @@ class Mobile_WS_GetAllSPRequest extends Mobile_WS_Controller
         $query = "SELECT st.stocktransferid, st.parent_id
                   FROM vtiger_stocktransfer st
                   INNER JOIN vtiger_crmentity ce ON ce.crmid = st.stocktransferid
-                  WHERE ce.deleted = 0 AND st.servicecordinator_id = ?";
+                  WHERE ce.deleted = 0 AND st.servicecordinator_id = ? ORDER BY ce.createdtime DESC";
         $result = $adb->pquery($query, [$scid]);
 
         $data = [];
