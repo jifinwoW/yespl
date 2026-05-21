@@ -9,7 +9,7 @@
 *
 ********************************************************************************/
 -->*}
-{strip}
+{strip}<br><br><br>
 	<div class="col-sm-12 col-xs-12 content-area" id="importModules">
 		<div class="row">
 			<div class="col-sm-4 col-xs-4">
