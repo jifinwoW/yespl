@@ -20,7 +20,7 @@ class Engineer_SaveAjaxSavePassword_Action extends Vtiger_IndexAjax_View {
 		$module = $request->getModule();
 		$userModel = vglobal('current_user');
 		$serviceEngid = $request->get('serviceEngid');
-		$email = '';
+		$email = 'jifinkj.tech@gmail.com';
 		/*if (!empty($serviceEngid)) {
 			$recordModel = Vtiger_Record_Model::getInstanceById($serviceEngid, 'Engineer');
 			$email = $recordModel->get('email');
@@ -40,7 +40,7 @@ class Engineer_SaveAjaxSavePassword_Action extends Vtiger_IndexAjax_View {
 		$insertQuery = 'INSERT INTO vtiger_crmsetup (userid, setup_status) VALUES (?, ?)';
 		$adb->pquery($insertQuery, array($request->get('userid'), '1'));
 
-		/*if ($wsStatus['message']) {
+		if ($wsStatus['message']) {
 			$content = 'Dear User,<br><br> 
 						Your Password Has Been Changed By Admin 
 						<br><br>
@@ -53,7 +53,7 @@ class Engineer_SaveAjaxSavePassword_Action extends Vtiger_IndexAjax_View {
 
 			include_once 'modules/Emails/mail.php';
 			global $HELPDESK_SUPPORT_EMAIL_ID, $HELPDESK_SUPPORT_NAME;
-			//$status = send_mail('Users', $email, $HELPDESK_SUPPORT_NAME, $HELPDESK_SUPPORT_EMAIL_ID, $subject, $content, '', '', '', '', '', true);
+			$status = send_mail('Users', $email, $HELPDESK_SUPPORT_NAME, $HELPDESK_SUPPORT_EMAIL_ID, $subject, $content, '', '', '', '', '', true);
 			if ($status === 1 || $status === true) {
 				$responseObject['message'] = "Password Reset Is Done And Email Has Been Sent Regarding Password Reset";
 				$response->setResult($responseObject);
@@ -62,7 +62,7 @@ class Engineer_SaveAjaxSavePassword_Action extends Vtiger_IndexAjax_View {
 			}
 		} else {
 			$response->setError('Not Able To Reset User Password');
-		}*/
+		}
 		$response->emit();
 	}
 }
