@@ -18,6 +18,7 @@ storage/*
 upload/*
 test/*
 test/upload/*
+test/templates_c/*
 
 # User privilege cache
 user_privileges/
