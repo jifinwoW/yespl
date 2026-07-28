@@ -981,7 +981,6 @@ input[type="password"].inputElement {
   display: inline-block;
   height: 0;
   overflow: hidden;
-  padding: 4px 0;
   width: 80%;
   text-overflow: ellipsis;
   white-space: nowrap;
