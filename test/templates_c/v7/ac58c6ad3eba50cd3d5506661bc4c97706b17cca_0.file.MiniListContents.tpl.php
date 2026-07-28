@@ -1,11 +1,11 @@
 <?php
-/* Smarty version 4.5.4, created on 2025-07-05 07:00:49
+/* Smarty version 4.5.4, created on 2026-07-28 17:55:51
   from '/home/yespl/htdocs/www.yespl.info/staging/layouts/v7/modules/Vtiger/dashboards/MiniListContents.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '4.5.4',
-  'unifunc' => 'content_6868cda142ada5_13172980',
+  'unifunc' => 'content_6a68ed275d73c0_33765060',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_6868cda142ada5_13172980 (Smarty_Internal_Template $_smarty_tpl) {
+function content_6a68ed275d73c0_33765060 (Smarty_Internal_Template $_smarty_tpl) {
 ?><div style='padding-top: 0;margin-bottom: 2%;padding-right:15px;'>
     <input type="hidden" id="widget_<?php echo $_smarty_tpl->tpl_vars['WIDGET']->value->get('id');?>
 _currentPage" value="<?php echo $_smarty_tpl->tpl_vars['CURRENT_PAGE']->value;?>

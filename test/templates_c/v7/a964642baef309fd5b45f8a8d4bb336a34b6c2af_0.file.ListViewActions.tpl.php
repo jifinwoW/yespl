@@ -1,11 +1,11 @@
 <?php
-/* Smarty version 4.5.4, created on 2025-09-09 11:48:28
+/* Smarty version 4.5.4, created on 2026-07-28 17:55:40
   from '/home/yespl/htdocs/www.yespl.info/staging/layouts/v7/modules/RecycleBin/ListViewActions.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '4.5.4',
-  'unifunc' => 'content_68c0140c03f735_99344358',
+  'unifunc' => 'content_6a68ed1c4f2a07_71530807',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_68c0140c03f735_99344358 (Smarty_Internal_Template $_smarty_tpl) {
+function content_6a68ed1c4f2a07_71530807 (Smarty_Internal_Template $_smarty_tpl) {
 ?>
 <div id="listview-actions" class="listview-actions-container"><div class = "row"><div class="btn-group col-md-4" role="group" aria-label="..."><span class="recordDependentListActions" style="float: left;"><?php $_smarty_tpl->_assignInScope('LISTVIEW_ACTIONS', array_reverse($_smarty_tpl->tpl_vars['LISTVIEW_MASSACTIONS']->value));
 $_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['LISTVIEW_ACTIONS']->value, 'LISTVIEW_MASSACTION');

@@ -1,11 +1,11 @@
 <?php
-/* Smarty version 4.5.4, created on 2025-09-09 11:48:28
+/* Smarty version 4.5.4, created on 2026-07-28 17:55:40
   from '/home/yespl/htdocs/www.yespl.info/staging/layouts/v7/modules/RecycleBin/partials/SidebarEssentials.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '4.5.4',
-  'unifunc' => 'content_68c0140c007558_60631108',
+  'unifunc' => 'content_6a68ed1c4c4224_48417611',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_68c0140c007558_60631108 (Smarty_Internal_Template $_smarty_tpl) {
+function content_6a68ed1c4c4224_48417611 (Smarty_Internal_Template $_smarty_tpl) {
 $_smarty_tpl->_checkPlugins(array(0=>array('file'=>'/home/yespl/htdocs/www.yespl.info/staging/vendor/smarty/smarty/libs/plugins/modifier.count.php','function'=>'smarty_modifier_count',),));
 ?>
 <div class="sidebar-menu sidebar-menu-full">

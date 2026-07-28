@@ -1,11 +1,11 @@
 <?php
-/* Smarty version 4.5.4, created on 2025-07-05 07:00:44
+/* Smarty version 4.5.4, created on 2026-07-28 17:54:04
   from '/home/yespl/htdocs/www.yespl.info/staging/layouts/v7/modules/Vtiger/partials/SidebarAppMenu.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '4.5.4',
-  'unifunc' => 'content_6868cd9c927d20_45934115',
+  'unifunc' => 'content_6a68ecbcb62462_15343159',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_6868cd9c927d20_45934115 (Smarty_Internal_Template $_smarty_tpl) {
+function content_6a68ecbcb62462_15343159 (Smarty_Internal_Template $_smarty_tpl) {
 ?>
 <div class="app-menu hide" id="app-menu">
 	<div class="container-fluid">
