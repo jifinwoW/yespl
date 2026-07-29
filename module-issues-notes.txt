@@ -1,0 +1,11 @@
+Table	                                Purpose	                                                             Importance
+
+vtiger_tab	                          Registers the module itself		                                    🔴 Required
+vtiger_blocks	                      Defines field blocks/sections		                                    🔴 Required
+vtiger_field	                      Defines fields and their DB mapping	                                🔴 Required
+vtiger_entityname	                  Defines base table, PK and display-name field	                        🔴 Required
+vtiger_crmentity	                  Common entity data for individual records	                            🔴 Entity modules
+Module base tabl                      Actual module-specific data	                                        🔴 Required
+vtiger_fieldmodulerel	              Defines modules allowed for uitype 10 reference fields	            🟠 When applicable
+vtiger_relatedlists	                  Defines related lists between modules	                                🟠 When applicable
+vtiger_crmentityrel	                  Stores many record-to-record relationships	                        🟠 When applicable
