@@ -153,30 +153,32 @@ class Tickets_Module_Model extends Vtiger_Module_Model {
 	public function getTicketsByStatus($owner, $dateFilter) {
 		$db = PearDatabase::getInstance();
 
-		$ownerSql = $this->getOwnerWhereConditionForDashBoards($owner);
-		if(!empty($ownerSql)) {
-			$ownerSql = ' AND '.$ownerSql;
+		$ownerSql = '';
+		if(!empty($owner) && strtolower($owner) !== 'all') {
+			$ownerSql = $this->getOwnerWhereConditionForDashBoards($owner);
+			if(!empty($ownerSql)) {
+				$ownerSql = ' AND '.$ownerSql;
+			}
 		}
 
 		$params = array();
 		$dateFilterSql = '';
-		if(!empty($dateFilter)) {
-			$dateFilterSql = ' AND createdtime BETWEEN ? AND ? ';
-			//appended time frame and converted to db time zone in showwidget.php
-			$params[] = $dateFilter['start'];
-			$params[] = $dateFilter['end'];
+		if(!empty($dateFilter) && is_array($dateFilter)) {
+			$dateFilterSql = ' AND vtiger_crmentity.createdtime BETWEEN ? AND ? ';
+			$params[] = $dateFilter['start'] . ' 00:00:00';
+			$params[] = $dateFilter['end'] . ' 23:59:59';
 		}
 		$picklistvaluesmap = getAllPickListValues("tickets_status");
         foreach($picklistvaluesmap as $picklistValue) {
             $params[] = $picklistValue;
         }
 
-		$result = $db->pquery('SELECT COUNT(*) as count, CASE WHEN vtiger_tickets.tickets_status IS NULL OR vtiger_tickets.status = "" THEN "" ELSE vtiger_tickets.status END AS statusvalue 
-							FROM vtiger_tickets INNER JOIN vtiger_crmentity ON vtiger_tickets.ticketid = vtiger_crmentity.crmid AND vtiger_crmentity.deleted=0
+		$result = $db->pquery('SELECT COUNT(*) as count, CASE WHEN vtiger_tickets.tickets_status IS NULL OR vtiger_tickets.tickets_status = "" THEN "" ELSE vtiger_tickets.tickets_status END AS statusvalue, MIN(vtiger_tickets_status.sortorderid) as sortorder 
+							FROM vtiger_tickets INNER JOIN vtiger_crmentity ON vtiger_tickets.ticketsid = vtiger_crmentity.crmid AND vtiger_crmentity.deleted=0
 							'.Users_Privileges_Model::getNonAdminAccessControlQuery($this->getName()). $ownerSql .' '.$dateFilterSql.
 							' INNER JOIN vtiger_tickets_status ON vtiger_tickets.tickets_status = vtiger_tickets_status.tickets_status 
-							WHERE vtiger_tickets.status IN ('.generateQuestionMarks($picklistvaluesmap).') 
-							GROUP BY statusvalue ORDER BY vtiger_tickets_status.sortorderid', $params);
+							WHERE vtiger_tickets.tickets_status IN ('.generateQuestionMarks($picklistvaluesmap).') 
+							GROUP BY statusvalue ORDER BY sortorder', $params);
 
 		$response = array();
 

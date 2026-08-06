@@ -47,6 +47,14 @@
 
 		{* This is needed as in some of the tpl we are using jQuery.ready *}
 		<script type="text/javascript" src="libraries/jquery/jquery.min.js"></script>
+		<script type="text/javascript">
+			var _vtDefineBackup = window.define;
+			window.define = undefined;
+		</script>
+		<script type="text/javascript" src="resources/chart.umd.min.js"></script>
+		<script type="text/javascript">
+			if (typeof _vtDefineBackup !== 'undefined') window.define = _vtDefineBackup;
+		</script>
 		<!--[if IE]>
 		<script type="text/javascript" src="libraries/html5shim/html5.js"></script>
 		<script type="text/javascript" src="libraries/html5shim/respond.js"></script>

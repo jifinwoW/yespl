@@ -13,4 +13,7 @@
 	</div>
 </div>
 
+{* Load Chart.js once for all dashboard chart widgets *}
+<script type="text/javascript" src="resources/chart.umd.min.js"></script>
+
 {include file="Footer.tpl"|vtemplate_path:$MODULE}

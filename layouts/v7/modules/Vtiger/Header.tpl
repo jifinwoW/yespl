@@ -56,6 +56,14 @@
 		<script src="{vresource_url('layouts/v7/lib/jquery/jquery.min.js')}"></script>
 		<script src="{vresource_url('layouts/v7/lib/jquery/jquery-migrate-1.4.1.js')}"></script>
 		<script type="text/javascript">
+			var _vtDefineBackup = window.define;
+			window.define = undefined;
+		</script>
+		<script src="{vresource_url('resources/chart.umd.min.js')}"></script>
+		<script type="text/javascript">
+			if (typeof _vtDefineBackup !== 'undefined') window.define = _vtDefineBackup;
+		</script>
+		<script type="text/javascript">
 			var _META = { 'module': "{$MODULE}", view: "{$VIEW}", 'parent': "{$PARENT_MODULE}", 'notifier':"{$NOTIFIER_URL}", 'app':"{if isset($SELECTED_MENU_CATEGORY)} {$SELECTED_MENU_CATEGORY}{/if}" };
             {if $EXTENSION_MODULE}
                 var _EXTENSIONMETA = { 'module': "{$EXTENSION_MODULE}", view: "{$EXTENSION_VIEW}"};

@@ -93,18 +93,20 @@ class HelpDesk_Module_Model extends Vtiger_Module_Model {
 	public function getTicketsByStatus($owner, $dateFilter) {
 		$db = PearDatabase::getInstance();
 
-		$ownerSql = $this->getOwnerWhereConditionForDashBoards($owner);
-		if(!empty($ownerSql)) {
-			$ownerSql = ' AND '.$ownerSql;
+		$ownerSql = '';
+		if(!empty($owner) && strtolower($owner) !== 'all') {
+			$ownerSql = $this->getOwnerWhereConditionForDashBoards($owner);
+			if(!empty($ownerSql)) {
+				$ownerSql = ' AND '.$ownerSql;
+			}
 		}
 
 		$params = array();
 		$dateFilterSql = '';
-		if(!empty($dateFilter)) {
-			$dateFilterSql = ' AND createdtime BETWEEN ? AND ? ';
-			//appended time frame and converted to db time zone in showwidget.php
-			$params[] = $dateFilter['start'];
-			$params[] = $dateFilter['end'];
+		if(!empty($dateFilter) && is_array($dateFilter)) {
+			$dateFilterSql = ' AND vtiger_crmentity.createdtime BETWEEN ? AND ? ';
+			$params[] = $dateFilter['start'] . ' 00:00:00';
+			$params[] = $dateFilter['end'] . ' 23:59:59';
 		}
 		$picklistvaluesmap = getAllPickListValues("ticketstatus");
         foreach($picklistvaluesmap as $picklistValue) {
