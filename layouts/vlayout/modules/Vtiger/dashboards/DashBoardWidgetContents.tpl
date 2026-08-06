@@ -12,9 +12,13 @@
 
 {strip}
 {if !empty($DATA)}
-    {assign var=SAFE_DATA value=Vtiger_Util_Helper::toSafeHTML($DATA)}
-    <div style="padding: 6px 12px 14px 12px; width: 100%; position: relative; height: 195px; box-sizing: border-box;">
-        <canvas id="chartjs_widget_content_{$WIDGET_ID}" data-chart="{$SAFE_DATA}" data-type="{$CHART_TYPE}" style="width: 100%; height: 175px;"></canvas>
+    {if is_array($DATA)}
+        {assign var=SAFE_DATA value=Vtiger_Util_Helper::toSafeHTML(ZEND_JSON::encode($DATA))}
+    {else}
+        {assign var=SAFE_DATA value=Vtiger_Util_Helper::toSafeHTML($DATA)}
+    {/if}
+    <div class="vtChartContainer" style="padding: 6px 10px; width: 100%; height: 210px; position: relative; box-sizing: border-box; overflow: hidden;">
+        <canvas id="chartjs_widget_content_{$WIDGET_ID}" data-chart="{$SAFE_DATA}" data-type="{$CHART_TYPE}" style="width: 100%; height: 100%;"></canvas>
     </div>
     <script type="text/javascript">
     (function() {
@@ -135,7 +139,7 @@
                     legend: {
                         display: isPieOrDoughnut,
                         position: 'bottom',
-                        labels: { padding: 8, font: { size: 10 }, usePointStyle: true }
+                        labels: { padding: 10, font: { size: 11 }, usePointStyle: true }
                     },
                     tooltip: {
                         callbacks: {
@@ -188,7 +192,55 @@
                     window.location.href = links[pts[0].index];
                 }
             };
-        }
+
+            function resizeWidgetContentChart() {
+                if (!canvas || !chart) return;
+                var widgetTile = canvas.closest('.dashboardWidget');
+                if (widgetTile) {
+                    var header = widgetTile.querySelector('.dashboardWidgetHeader');
+                    var footer = widgetTile.querySelector('.dashBoardWidgetFooter');
+                    var tileHeight = widgetTile.clientHeight || widgetTile.offsetHeight || 300;
+                    var headerHeight = header ? (header.clientHeight || header.offsetHeight || 40) : 40;
+                    var footerHeight = footer ? (footer.clientHeight || footer.offsetHeight || 35) : 35;
+
+                    var availHeight = tileHeight - headerHeight - footerHeight - 12;
+                    if (availHeight > 120) {
+                        canvas.parentElement.style.height = availHeight + 'px';
+                        var parentContent = canvas.closest('.dashboardWidgetContent');
+                        if (parentContent) {
+                            parentContent.style.height = (tileHeight - headerHeight - footerHeight) + 'px';
+                            parentContent.style.maxHeight = (tileHeight - headerHeight - footerHeight) + 'px';
+                            parentContent.style.overflow = 'hidden';
+                        }
+                    }
+                }
+                chart.resize();
+            }
+
+            resizeWidgetContentChart();
+
+            if (window.ResizeObserver) {
+                var widgetTile = canvas.closest('.dashboardWidget');
+                var ro = new ResizeObserver(function() {
+                    resizeWidgetContentChart();
+                });
+                if (widgetTile) {
+                    ro.observe(widgetTile);
+                } else if (canvas.parentElement) {
+                    ro.observe(canvas.parentElement);
+                }
+            }
+
+            window.addEventListener('resize', resizeWidgetContentChart);
+            if (typeof jQuery !== 'undefined') {
+                var widgetEl = jQuery(canvas).closest('.dashboardWidget');
+                var evts = 'Vtiger.DashboardWidget.PostResize Vtiger.Widget.PostResize Vtiger.Widget.Resize Vtiger.Dashboard.PostLoad Vtiger.Dashboard.PostRefresh';
+                if (widgetEl.length) {
+                    widgetEl.on(evts, resizeWidgetContentChart);
+                }
+                jQuery(document).on(evts, resizeWidgetContentChart);
+            }
+		}
 
         setTimeout(renderWidgetChart, 50);
         {/literal}
