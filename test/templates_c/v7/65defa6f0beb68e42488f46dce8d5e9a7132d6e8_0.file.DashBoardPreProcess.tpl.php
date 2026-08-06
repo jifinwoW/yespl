@@ -1,11 +1,11 @@
 <?php
-/* Smarty version 4.5.4, created on 2026-07-28 17:55:49
+/* Smarty version 4.5.4, created on 2026-08-06 11:40:40
   from '/home/yespl/htdocs/www.yespl.info/staging/layouts/v7/modules/Vtiger/dashboards/DashBoardPreProcess.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '4.5.4',
-  'unifunc' => 'content_6a68ed2556f136_84009965',
+  'unifunc' => 'content_6a7472b8df2a94_30768635',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
@@ -22,7 +22,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
     'file:modules/Vtiger/partials/SidebarHeader.tpl' => 1,
   ),
 ),false)) {
-function content_6a68ed2556f136_84009965 (Smarty_Internal_Template $_smarty_tpl) {
+function content_6a7472b8df2a94_30768635 (Smarty_Internal_Template $_smarty_tpl) {
 $_smarty_tpl->_subTemplateRender("file:modules/Vtiger/partials/Topbar.tpl", $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
 ?>
 
