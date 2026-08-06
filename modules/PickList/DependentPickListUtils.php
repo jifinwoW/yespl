@@ -244,5 +244,62 @@ class Vtiger_DependencyPicklist {
 		}
     }
 
+    /**
+     * Given a source (parent) picklist field and its selected value,
+     * returns the allowed values for dependent (child) picklist field(s).
+     *
+     * @param  string      $module      - Module name (e.g. 'Leads', 'Contacts')
+     * @param  string      $sourceField - The parent picklist field name (e.g. 'industry')
+     * @param  string      $sourceValue - The selected value in the parent picklist (e.g. 'Technology')
+     * @param  string|null $targetField - (Optional) A specific dependent field name to filter by.
+     *                                    If provided, returns a flat array of allowed values for that field.
+     *                                    If omitted, returns a map of all dependent fields => allowed values.
+     * @return array
+     *
+     * Example — without targetField (returns all dependents):
+     *   Vtiger_DependencyPicklist::getDependentValuesBySourceValue('Leads', 'industry', 'Technology');
+     *   // ['sub_industry' => ['Software', 'Hardware', ...]]
+     *
+     * Example — with targetField (returns flat values for that field):
+     *   Vtiger_DependencyPicklist::getDependentValuesBySourceValue('Leads', 'industry', 'Technology', 'sub_industry');
+     *   // ['Software', 'Hardware', ...]
+     */
+    static function getDependentValuesBySourceValue($module, $sourceField, $sourceValue, $targetField = null) {
+        $adb = PearDatabase::getInstance();
+
+        $tabId = getTabid($module);
+
+        $sql    = 'SELECT targetfield, targetvalues
+                     FROM vtiger_picklist_dependency
+                    WHERE tabid = ?
+                      AND sourcefield = ?
+                      AND sourcevalue = CAST(? AS CHAR CHARACTER SET utf8) COLLATE utf8_bin';
+        $params = array($tabId, $sourceField, $sourceValue);
+
+        // Narrow to a specific dependent field if provided
+        if (!empty($targetField)) {
+            $sql    .= ' AND targetfield = ?';
+            $params[] = $targetField;
+        }
+
+        $result   = $adb->pquery($sql, $params);
+        $noOfRows = $adb->num_rows($result);
+
+        $dependentValues = array();
+        for ($i = 0; $i < $noOfRows; $i++) {
+            $field        = $adb->query_result($result, $i, 'targetfield');
+            $rawValues    = decode_html($adb->query_result($result, $i, 'targetvalues'));
+            $decoded      = Zend_Json::decode(html_entity_decode($rawValues));
+            $dependentValues[$field] = is_array($decoded) ? $decoded : array();
+        }
+
+        // If a specific target field was requested, return its values as a flat array
+        if (!empty($targetField)) {
+            return isset($dependentValues[$targetField]) ? $dependentValues[$targetField] : array();
+        }
+
+        return $dependentValues;
+    }
+
 }
 ?>

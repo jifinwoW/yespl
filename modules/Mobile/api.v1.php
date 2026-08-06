@@ -46,6 +46,7 @@ class Mobile_APIV1_Controller
 		'CheckOut'                  => array('file' => '/api/ws/CheckOut.php',               	'class' => 'Mobile_WS_CheckOut'),
 		'AttendanceRegularization'  => array('file' => '/api/ws/AttendanceRegularization.php',  'class' => 'Mobile_WS_AttendanceRegularization'),
 		'GetPickListValues'         => array('file' => '/api/ws/GetPickListValues.php',         'class' => 'Mobile_WS_GetPickListValues'),
+		'GetDependentPickListValues'         => array('file' => '/api/ws/GetDependentPickListValues.php',         'class' => 'Mobile_WS_GetDependentPickListValues'),
 		'GetSRListByTicketid'       => array('file' => '/api/ws/GetSRListByTicketid.php',       'class' => 'Mobile_WS_GetSRListByTicketid'),
 		'GetSRPLCMNTListByTicketid'       => array('file' => '/api/ws/GetSRPLCMNTListByTicketid.php',       'class' => 'Mobile_WS_GetSRPLCMNTListByTicketid'),
 		'GetFollowUpListByTicketid' => array('file' => '/api/ws/GetFollowUpListByTicketid.php', 'class' => 'Mobile_WS_GetFollowUpListByTicketid'),

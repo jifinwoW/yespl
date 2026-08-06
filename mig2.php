@@ -9,26 +9,28 @@ include_once('vtlib/Vtiger/Module.php');
 $moduleInstance = null;
 $blockInstance = null;
 $fieldInstance = null;
-$moduleInstance = Vtiger_Module::getInstance('HelpDesk');
-$blockInstance = Vtiger_Block::getInstance('LBL_TICKET_INFORMATION', $moduleInstance);
+$moduleInstance = Vtiger_Module::getInstance('Tickets');
+$blockInstance = Vtiger_Block::getInstance('Call Closing Details', $moduleInstance);
 if ($blockInstance) {
-    $fieldInstance = Vtiger_Field::getInstance('amc_end_date', $moduleInstance);
+    $fieldInstance = Vtiger_Field::getInstance('status_reason', $moduleInstance);
     if (!$fieldInstance) {
         $fieldInstance = new Vtiger_Field();
-        $fieldInstance->name = 'amc_end_date';
-        $fieldInstance->label = 'AMC End Date';
+        $fieldInstance->name = 'status_reason';
+        $fieldInstance->label = 'Status Reason';
         $fieldInstance->table = $moduleInstance->basetable;
-        $fieldInstance->column = 'amc_end_date';
-        $fieldInstance->uitype = 5;
+        $fieldInstance->column = 'status_reason';
+        $fieldInstance->uitype = '16';
         $fieldInstance->presence = '0';
-        $fieldInstance->typeofdata = 'D~O';
-        $fieldInstance->columntype = 'DATE';
+        $fieldInstance->typeofdata = 'V~M';
+        $fieldInstance->columntype = 'VARCHAR(200)';
         $fieldInstance->defaultvalue = NULL;
         $blockInstance->addField($fieldInstance);
+        $fieldInstance->setPicklistValues(array('Engineer Visit', 'Online', 'Force closed', 'Customer Schedule pending','Spare Approval Pending','Engineer Schedule today','Engineer visit pending','Spare in transit-State HUB','Spare in transit-TRC','Spare Pending-TRC','Details Pending'));
+        echo "done";
     } else {
-        echo "field is already Present --- amc_end_date in HelpDesk Module --- <br>";
+        echo "field is already Present --- status_reason in Tickets Module --- <br>";
     }
 } else {
-    echo " block does not exits --- LBL_TICKET_INFORMATION -- <br>";
+    echo " block does not exits --- Call Closing Details -- <br>";
 }
 
