@@ -171,11 +171,21 @@
                     </span>
                 </span>
                 <div class="col-lg-7">
-                    <div class="input-daterange input-group dateRange widgetFilter" id="datepicker" name="createdtime">
-                        <input type="text" class="input-sm form-control" name="start" style="height:30px;"/>
+                    <div class="input-daterange input-group dateRange widgetFilter" name="createdtime" id="ticketDateRange_{$WIDGET_UNIQ}">
+                        <input type="text" class="input-sm form-control" name="start" placeholder="From" style="height:30px;"/>
                         <span class="input-group-addon">to</span>
-                        <input type="text" class="input-sm form-control" name="end" style="height:30px;"/>
+                        <input type="text" class="input-sm form-control" name="end" placeholder="To" style="height:30px;"/>
                     </div>
+                    <script type="text/javascript">
+                    jQuery(function($) {
+                        var $dr = $('#ticketDateRange_{$WIDGET_UNIQ}');
+                        $dr.find('input').each(function() {
+                            $(this).on('focus click', function() {
+                                $dr.find('input').not(this).datepicker('hide');
+                            });
+                        });
+                    });
+                    </script>
                 </div>
             </div>
         </div>

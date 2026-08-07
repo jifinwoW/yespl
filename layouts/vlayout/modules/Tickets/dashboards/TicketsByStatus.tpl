@@ -12,24 +12,6 @@
 
 <div class="dashboardWidgetHeader">
 	{include file="dashboards/WidgetHeader.tpl"|@vtemplate_path:$MODULE_NAME SETTING_EXIST=true}
-	<div class="row-fluid filterContainer hide" style="position:absolute;z-index:100001; background:#fff; padding:10px; border:1px solid #ccc; box-shadow:0 2px 8px rgba(0,0,0,0.15);">
-		<div class="row-fluid">
-			<span class="span5"><span class="pull-right">{vtranslate('Created Time', $MODULE_NAME)}&nbsp;{vtranslate('LBL_BETWEEN', $MODULE_NAME)}</span></span>
-			<span class="span4"><input type="text" name="createdtime" class="dateRange widgetFilter" /></span>
-		</div>
-		<div class="row-fluid">
-			<span class="span5"><span class="pull-right">{vtranslate('Assigned To', $MODULE_NAME)}</span></span>
-			<span class="span4">
-				{assign var=CURRENT_USER_ID value=$CURRENTUSER->getId()}
-				<select class="widgetFilter" name="owner">
-					<option value="">{vtranslate('LBL_ALL', $MODULE_NAME)}</option>
-					{foreach key=USER_ID item=USER_NAME from=$ACCESSIBLE_USERS}
-					<option value="{$USER_ID}">{if $USER_ID eq $CURRENTUSER->getId()}{vtranslate('LBL_MINE',$MODULE_NAME)}{else}{$USER_NAME}{/if}</option>
-					{/foreach}
-				</select>
-			</span>
-		</div>
-	</div>
 </div>
 
 <div class="dashboardWidgetContent" style="width: 100%; position: relative;">
@@ -180,6 +162,69 @@
 </div>
 
 <div class="widgeticons dashBoardWidgetFooter">
+    <div class="filterContainer">
+        <div class="row">
+            <div class="col-sm-12">
+                <span class="col-lg-4">
+                    <span>
+                        <strong>{vtranslate('Created Time', $MODULE_NAME)}&nbsp;{vtranslate('LBL_BETWEEN', $MODULE_NAME)}</strong>
+                    </span>
+                </span>
+                <div class="col-lg-7">
+                    <div class="input-daterange input-group dateRange widgetFilter" name="createdtime" id="ticketDateRange_{$WIDGET_UNIQ}">
+                        <input type="text" class="input-sm form-control" name="start" placeholder="From" style="height:30px;"/>
+                        <span class="input-group-addon">to</span>
+                        <input type="text" class="input-sm form-control" name="end" placeholder="To" style="height:30px;"/>
+                    </div>
+                    <script type="text/javascript">
+                    jQuery(function($) {
+                        var $dr = $('#ticketDateRange_{$WIDGET_UNIQ}');
+                        $dr.find('input').each(function() {
+                            $(this).on('focus click', function() {
+                                $dr.find('input').not(this).datepicker('hide');
+                            });
+                        });
+                    });
+                    </script>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-sm-12">
+                <span class="col-lg-4">
+                    <span>
+                        <strong>{vtranslate('Assigned To', $MODULE_NAME)}</strong>
+                    </span>
+                </span>
+                <span class="col-lg-7">
+                        {assign var=CURRENT_USER_ID value=$CURRENTUSER->getId()}
+                        <select class="select2 col-sm-12 widgetFilter reloadOnChange" name="owner">
+                            <option value="" selected="selected">{vtranslate('LBL_ALL', $MODULE_NAME)}</option>
+                            <option value="{$CURRENT_USER_ID}">{vtranslate('LBL_MINE')}</option>
+                            {assign var=ALL_ACTIVEUSER_LIST value=$CURRENTUSER->getAccessibleUsers()}
+                            {if php7_count($ALL_ACTIVEUSER_LIST) gt 1}
+                                <optgroup label="{vtranslate('LBL_USERS')}">
+                                    {foreach key=OWNER_ID item=OWNER_NAME from=$ALL_ACTIVEUSER_LIST}
+                                        {if $OWNER_ID neq $CURRENT_USER_ID}
+                                            <option value="{$OWNER_ID}">{$OWNER_NAME}</option>
+                                        {/if}
+                                    {/foreach}
+                                </optgroup>
+                            {/if}
+                            {assign var=ALL_ACTIVEGROUP_LIST value=$CURRENTUSER->getAccessibleGroups()}
+                            {if !empty($ALL_ACTIVEGROUP_LIST)}
+                                <optgroup label="{vtranslate('LBL_GROUPS')}">
+                                    {foreach key=OWNER_ID item=OWNER_NAME from=$ALL_ACTIVEGROUP_LIST}
+                                        <option value="{$OWNER_ID}">{$OWNER_NAME}</option>
+                                    {/foreach}
+                                </optgroup>
+                            {/if}
+                        </select>
+                </span>
+            </div>
+        </div>
+    </div>
     <div class="footerIcons pull-right">
         {include file="dashboards/DashboardFooterIcons.tpl"|@vtemplate_path:$MODULE_NAME SETTING_EXIST=true}
     </div>
