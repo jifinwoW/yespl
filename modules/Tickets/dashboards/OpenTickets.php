@@ -10,12 +10,24 @@
 
 class Tickets_OpenTickets_Dashboard extends Vtiger_IndexAjax_View {
     
-    function getSearchParams($value) {
-        $listSearchParams = array();
-        $conditions = array(array('tickets_status','e','Open'),array('assigned_user_id','e',decode_html(urlencode(escapeSlashes($value)))));
-        $listSearchParams[] = $conditions;
-        return '&search_params='. json_encode($listSearchParams);
-    }
+	function getSearchParams($name) {
+		$listSearchParams = array(
+			array(
+				array(
+					'tickets_status',
+					'e',
+					'Hold,Pending'
+				),
+				array(
+					'assigned_user_id',
+					'c',
+					$name
+				)
+			)
+		);
+
+		return '&search_params=' . json_encode($listSearchParams);
+	}
 
 	public function process(Vtiger_Request $request) {
 		$currentUser = Users_Record_Model::getCurrentUserModel();
@@ -26,9 +38,9 @@ class Tickets_OpenTickets_Dashboard extends Vtiger_IndexAjax_View {
 
 		$moduleModel = Vtiger_Module_Model::getInstance($moduleName);
 		$data = $moduleModel->getOpenTickets();
-        $listViewUrl = $moduleModel->getListViewUrlWithAllFilter();
+        $listViewUrl = 'index.php?module=' . $moduleName . '&view=List';
         for($i = 0;$i<php7_count($data);$i++){
-            $data[$i]["links"] = $listViewUrl.$this->getSearchParams($data[$i]["name"]).'&nolistcache=1';
+            $data[$i]["links"] = $listViewUrl.$this->getSearchParams($data[$i]["name"])."&nolistcache=1&searchtype=BasicSearch&query=true";
         }
 
 		$widget = Vtiger_Widget_Model::getInstance($linkId, $currentUser->getId());

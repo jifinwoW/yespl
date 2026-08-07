@@ -188,7 +188,7 @@
             canvas.style.cursor = 'pointer';
             canvas.onclick = function(evt) {
                 var pts = chart.getElementsAtEventForMode(evt, 'nearest', { intersect: true }, false);
-                if (pts.length && urls[pts[0].index]) {
+                if (pts.length && links[pts[0].index]) {
                     window.location.href = links[pts[0].index];
                 }
             };

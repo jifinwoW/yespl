@@ -123,23 +123,16 @@ class Tickets_Module_Model extends Vtiger_Module_Model {
 	 */
 	public function getOpenTickets() {
 		$db = PearDatabase::getInstance();
-		//TODO need to handle security
-		$params = array();
-		$picklistvaluesmap = getAllPickListValues("tickets_status");
-        if(in_array('Open', $picklistvaluesmap)) $params[] = 'Open';
-        
-		if(php7_count($params) > 0) {
 		$result = $db->pquery('SELECT count(*) AS count, COALESCE(vtiger_groups.groupname,vtiger_users.userlabel) as name, COALESCE(vtiger_groups.groupid,vtiger_users.id) as id  FROM vtiger_tickets
 						INNER JOIN vtiger_crmentity ON vtiger_tickets.ticketsid = vtiger_crmentity.crmid
 						LEFT JOIN vtiger_users ON vtiger_users.id=vtiger_crmentity.smownerid AND vtiger_users.status="ACTIVE"
 						LEFT JOIN vtiger_groups ON vtiger_groups.groupid=vtiger_crmentity.smownerid
 						'.Users_Privileges_Model::getNonAdminAccessControlQuery($this->getName()).
-						' WHERE vtiger_tickets.tickets_status = ? AND vtiger_crmentity.deleted = 0 GROUP BY smownerid', $params);
-		}
+						' WHERE vtiger_tickets.tickets_status NOT IN (?,?,?) AND vtiger_crmentity.deleted = 0 GROUP BY smownerid', array('Closed','Resolved','Force closed'));
 		$data = array();
 		for($i=0; $i<$db->num_rows($result); $i++) {
 			$row = $db->query_result_rowdata($result, $i);
-						$row['name'] = decode_html($row['name']);
+			$row['name'] = decode_html($row['name']);
 			$data[] = $row;
 		}
 		return $data;
