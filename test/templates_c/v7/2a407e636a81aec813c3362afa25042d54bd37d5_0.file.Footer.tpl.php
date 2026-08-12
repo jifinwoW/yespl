@@ -1,11 +1,11 @@
 <?php
-/* Smarty version 4.5.4, created on 2026-08-12 10:31:58
+/* Smarty version 4.5.4, created on 2026-08-12 10:47:49
   from '/home/yespl/htdocs/www.yespl.info/staging/layouts/v7/modules/Vtiger/Footer.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '4.5.4',
-  'unifunc' => 'content_6a7c4b9e22ea11_79620291',
+  'unifunc' => 'content_6a7c4f555c80b6_12534362',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_6a7c4b9e22ea11_79620291 (Smarty_Internal_Template $_smarty_tpl) {
+function content_6a7c4f555c80b6_12534362 (Smarty_Internal_Template $_smarty_tpl) {
 ?>
 <footer class="app-footer">
 	<p>
