@@ -81,40 +81,10 @@ Vtiger.Class("Settings_Vtiger_CompanyDetails_Js",{},{
 		}
 	},
     
-    registerCompanyLogoDimensionsValidation : function() {
-        //150*40 logo with padding would be nice
-        var allowedDimensions = {
-            'width' : 150,
-            'height' : 40
-        };
-        var updateCompanyDetailsForm = jQuery('form#updateCompanyDetailsForm');
-        var logoFile = updateCompanyDetailsForm.find('#logoFile');
-        logoFile.on('change', function() {
-            //http://stackoverflow.com/a/13572209
-            var _URL = window.URL || window.webkitURL;
-            var image, file = this.files[0];
-            if(file && typeof Image === 'function') {
-                image = new Image();
-                image.onload = function() {
-                    var width = this.width;
-                    var height = this.height;
-                    if(width > allowedDimensions.width || height > allowedDimensions.height ) {
-                        app.helper.showErrorNotification({
-                            'message' : app.vtranslate('JS_LOGO_IMAGE_DIMENSIONS_WRONG')
-                        });
-                        logoFile.val(null); //this will empty file input
-                    }
-                };
-                image.src = _URL.createObjectURL(file);
-            }
-        });
-    },
-	
 	registerEvents: function() {
 		this.registerUpdateDetailsClickEvent();
 		this.registerSaveCompanyDetailsEvent();
 		this.registerCancelClickEvent();
-		this.registerCompanyLogoDimensionsValidation();
 	}
 
 });
