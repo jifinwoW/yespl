@@ -163,7 +163,7 @@
 											<div class="profile-img-container">
 												{assign var=IMAGE_DETAILS value=$USER_MODEL->getImageDetails()}
 												{if $IMAGE_DETAILS neq '' && $IMAGE_DETAILS[0] neq '' && $IMAGE_DETAILS[0].path eq ''}
-													<i class='vicon-vtigeruser' style="font-size:90px"></i>
+													<i class='vicon-vtigeruser' style="font-size:60px"></i>
 												{else}
 													{foreach item=IMAGE_INFO from=$IMAGE_DETAILS}
 														{if !empty($IMAGE_INFO.url)}

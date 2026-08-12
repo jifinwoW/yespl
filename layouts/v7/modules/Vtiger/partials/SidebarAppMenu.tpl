@@ -102,7 +102,7 @@
 							{/if}
 						</div>
 					</div>
-					<ul class="dropdown-menu app-modules-dropdown dropdown-modules-compact" aria-labelledby="{$APP_NAME}_modules_dropdownMenu" data-height="0.27">
+					<ul style="margin-top:0 !important;" class="dropdown-menu app-modules-dropdown dropdown-modules-compact setting_style" aria-labelledby="{$APP_NAME}_modules_dropdownMenu" data-height="0.27">
 						<li>
 							<a href="?module=Vtiger&parent=Settings&view=Index">
 								<span class="fa fa-cog module-icon"></span>

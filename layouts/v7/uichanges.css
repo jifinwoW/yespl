@@ -797,6 +797,10 @@ thead{
     margin-top: 4.5%!important;
     margin-bottom: 4.5%!important;
 }
+.setting_style{
+    margin-top: 0 !important;
+    height: 100vh !important;
+}
 .app-menu .app-modules-dropdown li a {
     color: #555!important;
 }
