@@ -26,6 +26,8 @@ class Tickets_Module_Model extends Vtiger_Module_Model {
 			'service_location' => 'service_location',
 			'connectivity' => 'connectivity',
 			'device_details' => 'device_details',
+			'gyro' => 'ticket_gyro',
+			'ups' => 'ticket_ups',
 			'gyro_type' => 'gyro_type',
 			'gyro_model' => 'gyro_model',
 			'gyro_serialno' => 'gyro_serialno',
@@ -34,14 +36,16 @@ class Tickets_Module_Model extends Vtiger_Module_Model {
 			'warranty_month' => 'warranty_month',
 			'warranty_start_date' => 'warranty_start_date',
 			'warranty_end_date' => 'warranty_end_date',
-			'engineer_id' => 'engineer_id',
+			'engineer_name' => 'engineer_id',
 			'contact_mobileno' => 'contact_mobileno',
 			'address' => 'address',
 			'city' => 'city',
-			'state' => 'state',
+			'amc_state' => 'tkt_state',
 			'pincode' => 'pincode',
 			'parent_id' => 'account_id',
 			'location_type' => 'location_type',
+			'amc_model' => 'tkt_model',
+			'amc_tat'=>'tkt_tat'
 		);
 	}
 
@@ -348,5 +352,32 @@ class Tickets_Module_Model extends Vtiger_Module_Model {
 	}
 	
 	
+	/**
+	 * Fields that are mandatory in full Edit form but should NOT appear
+	 * in the Quick Create modal (too detailed / conditional).
+	 */
+	protected static $quickCreateExcludedFields = [
+		'gyro_type',
+		'gyro_serialno',
+		'ups_serialno',
+		'ups_details',
+	];
+
+	/**
+	 * Override to suppress certain mandatory fields from the Quick Create modal.
+	 */
+	public function getQuickCreateFields() {
+		$fields = parent::getQuickCreateFields();
+		foreach (self::$quickCreateExcludedFields as $fieldName) {
+			unset($fields[$fieldName]);
+		}
+		return $fields;
+	}
+
+	public function isQuickCreateSupported() {
+    return false;
+	}
+
+
 }
 

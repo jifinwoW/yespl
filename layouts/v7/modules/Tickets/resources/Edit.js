@@ -15,15 +15,16 @@ Vtiger_Edit_Js("Tickets_Edit_Js", {}, {
 		service_location: 'service_location',
 		connectivity: 'connectivity',
 		device_details: 'device_details',
+		gyro: 'ticket_gyro',
 		gyro_type: 'gyro_type',
 		gyro_model: 'gyro_model',
 		gyro_serialno: 'gyro_serialno',
+		ups: 'ticket_ups',
 		ups_details: 'ups_details',
 		ups_serialno: 'ups_serialno',
 		warranty_month: 'warranty_month',
 		warranty_start_date: 'warranty_start_date',
 		warranty_end_date: 'warranty_end_date',
-		engineer_id: 'engineer_id',
 		contact_mobileno: 'contact_mobileno',
 		address: 'address',
 		city: 'city',
@@ -40,6 +41,21 @@ Vtiger_Edit_Js("Tickets_Edit_Js", {}, {
 		this.registerInstallationDateAutoPopulateEvent(container);
 		this.registerGyroEvent(container);
 		this.registerUpsEvent(container);
+		this.autoPopulateFromSourceRecord(container);
+	},
+
+
+	autoPopulateFromSourceRecord: function(container) {
+		var thisInstance = this;
+		// post.QuickCreateForm.show fires AFTER RelatedList.js injects sourceRecord/sourceModule
+		app.event.one('post.QuickCreateForm.show', function(event, form) {
+			var sourceModule = form.find('input[name="sourceModule"]').val();
+			var sourceRecord = form.find('input[name="sourceRecord"]').val();
+			if (!sourceRecord || sourceModule !== 'HelpDesk') {
+				return;
+			}
+			thisInstance.populateFieldsFromAmc({ record: sourceRecord, source_module: sourceModule }, form);
+		});
 	},
 
 	registerInstallationDateAutoPopulateEvent: function(container) {

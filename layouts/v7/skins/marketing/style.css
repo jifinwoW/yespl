@@ -2460,6 +2460,10 @@ th {
 .quickCreateContent .input-group {
   display: table;
 }
+.quickCreateContent .textAreaElement {
+  height: 80px !important;
+  width: 100% !important;
+}
 .quickCreateContent .inputElement {
   height: 30px;
   width: 200px;

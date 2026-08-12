@@ -245,7 +245,7 @@ class HelpDesk_Module_Model extends Vtiger_Module_Model {
 		if ($moduleName === 'HelpDesk') {
 			return [
 				['module' => 'Contacts',          'fieldname' => 'contact_id'],
-				['module' => 'Engineer',           'fieldname' => 'engineer_id'],
+				['module' => 'Engineer',           'fieldname' => 'engineer_name'],
 				['module' => 'Vendors',            'fieldname' => 'vendor_id'],
 				['module' => 'ServiceCordinator',  'fieldname' => 'serviceengineer'],
 			];
