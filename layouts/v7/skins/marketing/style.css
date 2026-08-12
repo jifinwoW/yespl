@@ -257,6 +257,10 @@ body > .mCSB_inside > .mCSB_container {
   display: inline-block;
   vertical-align: top;
 }
+.fc-toolbar.fc-header-toolbar {
+    margin-bottom: 1em;
+    margin-top: 3em !important;
+}
 .search-link {
   float: left;
   display: inline-block;

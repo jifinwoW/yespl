@@ -959,6 +959,7 @@ img.module-png-icon {
     height: 23px;
     object-fit: contain;
     vertical-align: middle;
+    filter: brightness(0) invert(1) brightness(0.533);
 }
 /* align icon and text in the app menu dropdown */
 .app-menu .app-modules-dropdown li a span {
