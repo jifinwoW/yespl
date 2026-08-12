@@ -8,8 +8,8 @@
  * All Rights Reserved.
  *************************************************************************************/
 $languageStrings = array(
-	'LBL_ADD_RECORD' => 'Add Engineer',
-	'SINGLE_Expenses' => 'Expenses',
+	'LBL_ADD_RECORD' => 'Add Expense',
+	'SINGLE_Expenses' => 'Expense',
 	'LBL_EXPENSES_INFORMATION' =>'Expenses Details'
 );
 
