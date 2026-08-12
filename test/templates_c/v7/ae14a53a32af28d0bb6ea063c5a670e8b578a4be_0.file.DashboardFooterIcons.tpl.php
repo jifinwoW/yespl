@@ -1,11 +1,11 @@
 <?php
-/* Smarty version 4.5.4, created on 2026-08-06 12:18:09
+/* Smarty version 4.5.4, created on 2026-08-12 10:31:59
   from '/home/yespl/htdocs/www.yespl.info/staging/layouts/v7/modules/Vtiger/dashboards/DashboardFooterIcons.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '4.5.4',
-  'unifunc' => 'content_6a747b815f7ca5_12699833',
+  'unifunc' => 'content_6a7c4b9f150da1_88116210',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_6a747b815f7ca5_12699833 (Smarty_Internal_Template $_smarty_tpl) {
+function content_6a7c4b9f150da1_88116210 (Smarty_Internal_Template $_smarty_tpl) {
 if ($_smarty_tpl->tpl_vars['SETTING_EXIST']->value) {?>
 <a name="dfilter">
 	<i class='fa fa-cog' border='0' align="absmiddle" title="<?php echo vtranslate('LBL_FILTER');?>

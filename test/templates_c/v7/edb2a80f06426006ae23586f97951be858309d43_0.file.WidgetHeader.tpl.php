@@ -1,11 +1,11 @@
 <?php
-/* Smarty version 4.5.4, created on 2026-08-06 12:18:09
+/* Smarty version 4.5.4, created on 2026-08-12 10:31:59
   from '/home/yespl/htdocs/www.yespl.info/staging/layouts/v7/modules/Vtiger/dashboards/WidgetHeader.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '4.5.4',
-  'unifunc' => 'content_6a747b815e79f8_94314394',
+  'unifunc' => 'content_6a7c4b9f13a1c4_29406364',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_6a747b815e79f8_94314394 (Smarty_Internal_Template $_smarty_tpl) {
+function content_6a7c4b9f13a1c4_29406364 (Smarty_Internal_Template $_smarty_tpl) {
 $_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['STYLES']->value, 'cssModel', false, 'index');
 $_smarty_tpl->tpl_vars['cssModel']->do_else = true;
 if ($_from !== null) foreach ($_from as $_smarty_tpl->tpl_vars['index']->value => $_smarty_tpl->tpl_vars['cssModel']->value) {

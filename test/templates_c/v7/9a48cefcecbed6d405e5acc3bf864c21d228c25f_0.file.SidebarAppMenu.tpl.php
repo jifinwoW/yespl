@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 4.5.4, created on 2026-08-06 12:18:08
+/* Smarty version 4.5.4, created on 2026-08-12 10:31:58
   from '/home/yespl/htdocs/www.yespl.info/staging/layouts/v7/modules/Vtiger/partials/SidebarAppMenu.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '4.5.4',
-  'unifunc' => 'content_6a747b807b16c5_95700651',
+  'unifunc' => 'content_6a7c4b9e140a65_99903670',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '9a48cefcecbed6d405e5acc3bf864c21d228c25f' => 
     array (
       0 => '/home/yespl/htdocs/www.yespl.info/staging/layouts/v7/modules/Vtiger/partials/SidebarAppMenu.tpl',
-      1 => 1727649312,
+      1 => 1786512838,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_6a747b807b16c5_95700651 (Smarty_Internal_Template $_smarty_tpl) {
+function content_6a7c4b9e140a65_99903670 (Smarty_Internal_Template $_smarty_tpl) {
 ?>
 <div class="app-menu hide" id="app-menu">
 	<div class="container-fluid">
@@ -157,7 +157,7 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
 							<?php }?>
 						</div>
 					</div>
-					<ul class="dropdown-menu app-modules-dropdown dropdown-modules-compact" aria-labelledby="<?php echo $_smarty_tpl->tpl_vars['APP_NAME']->value;?>
+					<ul style="margin-top:0 !important;" class="dropdown-menu app-modules-dropdown dropdown-modules-compact setting_style" aria-labelledby="<?php echo $_smarty_tpl->tpl_vars['APP_NAME']->value;?>
 _modules_dropdownMenu" data-height="0.27">
 						<li>
 							<a href="?module=Vtiger&parent=Settings&view=Index">
