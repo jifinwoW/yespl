@@ -185,12 +185,21 @@
 										<hr style="margin: 10px 0 !important">
 										<div class="">
 											<span class="pull-left">
-												<span class="fa fa-cogs"></span>
-												<a id="menubar_item_right_LBL_MY_PREFERENCES" href="{$USER_MODEL->getPreferenceDetailViewUrl()}">{vtranslate('LBL_MY_PREFERENCES')}</a>
+												<a id="menubar_item_right_LBL_MY_PREFERENCES"
+												href="{$USER_MODEL->getPreferenceDetailViewUrl()}"
+												style="display: flex; align-items: center; gap: 6px; font-size: 14px;">
+													<span class="fa fa-cogs" style="line-height: 1;"></span>
+													{vtranslate('LBL_MY_PREFERENCES')}
+												</a>
 											</span>
 											<span class="pull-right">
-												<span class="fa fa-power-off"></span>
-												<a id="menubar_item_right_LBL_SIGN_OUT" href="index.php?module=Users&action=Logout">{vtranslate('LBL_SIGN_OUT')}</a>
+												
+												<a id="menubar_item_right_LBL_SIGN_OUT"
+													href="index.php?module=Users&action=Logout"
+													style="display: flex; align-items: center; gap: 6px;font-size:14px">
+													<span class="fa fa-power-off" style="line-height: 1;"></span>
+													{vtranslate('LBL_SIGN_OUT')}
+												</a>
 											</span>
 										</div>
 									</div>

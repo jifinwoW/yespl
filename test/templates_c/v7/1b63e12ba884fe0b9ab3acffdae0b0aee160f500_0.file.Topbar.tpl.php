@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 4.5.4, created on 2026-08-12 10:47:49
+/* Smarty version 4.5.4, created on 2026-08-12 16:29:48
   from '/home/yespl/htdocs/www.yespl.info/staging/layouts/v7/modules/Vtiger/partials/Topbar.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '4.5.4',
-  'unifunc' => 'content_6a7c4f554f6f15_67613916',
+  'unifunc' => 'content_6a7c9f7c3b1ea6_90168055',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '1b63e12ba884fe0b9ab3acffdae0b0aee160f500' => 
     array (
       0 => '/home/yespl/htdocs/www.yespl.info/staging/layouts/v7/modules/Vtiger/partials/Topbar.tpl',
-      1 => 1786511950,
+      1 => 1786552166,
       2 => 'file',
     ),
   ),
@@ -21,7 +21,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
     'file:modules/Vtiger/Header.tpl' => 1,
   ),
 ),false)) {
-function content_6a7c4f554f6f15_67613916 (Smarty_Internal_Template $_smarty_tpl) {
+function content_6a7c9f7c3b1ea6_90168055 (Smarty_Internal_Template $_smarty_tpl) {
 $_smarty_tpl->_subTemplateRender("file:modules/Vtiger/Header.tpl", $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
 $_smarty_tpl->_assignInScope('APP_IMAGE_MAP', Vtiger_MenuStructure_Model::getAppIcons());?><nav class="navbar navbar-inverse navbar-fixed-top app-fixed-navbar"><div class="container-fluid global-nav"><div class="row"><div class="col-lg-3 col-md-3 col-sm-4 col-xs-8 app-navigator-container"><div class="row"><div id="appnavigator" class="col-sm-2 col-xs-2 cursorPointer app-switcher-container" data-app-class="<?php if ($_smarty_tpl->tpl_vars['MODULE']->value == 'Home' || !$_smarty_tpl->tpl_vars['MODULE']->value) {?>fa-dashboard<?php } else {
 echo $_smarty_tpl->tpl_vars['APP_IMAGE_MAP']->value[$_smarty_tpl->tpl_vars['SELECTED_MENU_CATEGORY']->value];
@@ -120,9 +120,9 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);
 </h4><h5 class="textOverflowEllipsis" title='<?php echo $_smarty_tpl->tpl_vars['USER_MODEL']->value->get('user_name');?>
 '><?php echo $_smarty_tpl->tpl_vars['USER_MODEL']->value->get('user_name');?>
 </h5><p><?php echo $_smarty_tpl->tpl_vars['USER_MODEL']->value->getUserRoleName();?>
-</p></div></div></div><div id="logout-footer" class="logout-footer clearfix"><hr style="margin: 10px 0 !important"><div class=""><span class="pull-left"><span class="fa fa-cogs"></span><a id="menubar_item_right_LBL_MY_PREFERENCES" href="<?php echo $_smarty_tpl->tpl_vars['USER_MODEL']->value->getPreferenceDetailViewUrl();?>
-"><?php echo vtranslate('LBL_MY_PREFERENCES');?>
-</a></span><span class="pull-right"><span class="fa fa-power-off"></span><a id="menubar_item_right_LBL_SIGN_OUT" href="index.php?module=Users&action=Logout"><?php echo vtranslate('LBL_SIGN_OUT');?>
+</p></div></div></div><div id="logout-footer" class="logout-footer clearfix"><hr style="margin: 10px 0 !important"><div class=""><span class="pull-left"><a id="menubar_item_right_LBL_MY_PREFERENCES" href="<?php echo $_smarty_tpl->tpl_vars['USER_MODEL']->value->getPreferenceDetailViewUrl();?>
+"style="display: flex; align-items: center; gap: 6px; font-size: 14px;"><span class="fa fa-cogs" style="line-height: 1;"></span><?php echo vtranslate('LBL_MY_PREFERENCES');?>
+</a></span><span class="pull-right"><a id="menubar_item_right_LBL_SIGN_OUT" href="index.php?module=Users&action=Logout" style="display: flex; align-items: center; gap: 6px;font-size:14px"><span class="fa fa-power-off" style="line-height: 1;"></span><?php echo vtranslate('LBL_SIGN_OUT');?>
 </a></span></div></div></div></div></li></ul></div></div></div>
 <?php }
 }
