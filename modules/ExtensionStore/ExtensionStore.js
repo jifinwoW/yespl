@@ -101,7 +101,7 @@ jQuery.Class('ExtensionStore_ExtensionStore_Js', {}, {
 
 	insertTogglePromotionHtml: function () {
 		var toggleHtml = '<div class="btn-group">'+
-				'<button class="btn btn-default addButton togglePromotion up">'+
+				'<button class="hide btn btn-default addButton togglePromotion up">'+
 					'<span id="hide" class="fa fa-chevron-up"></span>'+
 					'<span id="show" class="fa fa-chevron-down hide"></span>'+
 				'</button>'+

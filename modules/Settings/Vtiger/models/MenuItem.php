@@ -195,7 +195,8 @@ class Settings_Vtiger_MenuItem_Model extends Vtiger_Base_Model {
 	public static function getAll($menuModel=false, $onlyActive=true) {
 		$skipMenuItemList = array('LBL_AUDIT_TRAIL', 'LBL_SYSTEM_INFO', 'LBL_PROXY_SETTINGS', 'LBL_DEFAULT_MODULE_VIEW',
 								'LBL_FIELDFORMULAS', 'LBL_FIELDS_ACCESS', 'LBL_MAIL_MERGE', 'NOTIFICATIONSCHEDULERS',
-								'INVENTORYNOTIFICATION', 'ModTracker', 'LBL_WORKFLOW_LIST','LBL_TOOLTIP_MANAGEMENT','Webforms Configuration Editor');
+								'INVENTORYNOTIFICATION', 'ModTracker', 'LBL_WORKFLOW_LIST','LBL_TOOLTIP_MANAGEMENT','Webforms Configuration Editor',
+								'VTLIB_LBL_MODULE_MANAGER');
 
 		$db = PearDatabase::getInstance();
 		$sql = 'SELECT * FROM '.self::$itemsTable;
@@ -241,7 +242,8 @@ class Settings_Vtiger_MenuItem_Model extends Vtiger_Base_Model {
     public static function getPinnedItems($fieldList = array()) {
 		$skipMenuItemList = array('LBL_AUDIT_TRAIL', 'LBL_SYSTEM_INFO', 'LBL_PROXY_SETTINGS', 'LBL_DEFAULT_MODULE_VIEW',
 								'LBL_FIELDFORMULAS', 'LBL_FIELDS_ACCESS', 'LBL_MAIL_MERGE', 'NOTIFICATIONSCHEDULERS',
-								'INVENTORYNOTIFICATION', 'ModTracker', 'LBL_WORKFLOW_LIST','LBL_TOOLTIP_MANAGEMENT','Webforms Configuration Editor');
+								'INVENTORYNOTIFICATION', 'ModTracker', 'LBL_WORKFLOW_LIST','LBL_TOOLTIP_MANAGEMENT','Webforms Configuration Editor',
+								'VTLIB_LBL_MODULE_MANAGER','LBL_EXTENSION_STORE');
 		
         $db = PearDatabase::getInstance();
         

@@ -37,7 +37,7 @@
                 </li>
             </ul>
         {/if}
-        <button type="button" id="NextPageButton" class="btn btn-default" {if !$PAGING_MODEL->isNextPageExists()}disabled{/if}><i class="fa fa-caret-right"></i></button>
+        <button type="button" id="NextPageButton" style="margin-left: 5px !important;" class="btn btn-default" {if !$PAGING_MODEL->isNextPageExists()}disabled{/if}><i class="fa fa-caret-right"></i></button>
     </div>
     <span class="pageNumbers  pull-right" style="position:relative;top:7px;">
         <span class="pageNumbersText">
