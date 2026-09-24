@@ -578,6 +578,19 @@ Vtiger.Class("Vtiger_DashBoard_Js",{
 						}
 							fullscreenview += '</div></ul></li></div></div></div>';
 
+			// Detect Chart.js canvas widget BEFORE building modal (catches all chartjs_ prefixed canvases)
+			var chartjsCanvas = widgetContainer.find('canvas[data-chart]');
+			if (!chartjsCanvas.length) {
+				chartjsCanvas = widgetContainer.find('canvas[id^="chartjs_"]');
+			}
+			var isChartJsWidget = (chartjsCanvas.length > 0);
+			var chartJsData = '';
+			var chartJsType = '';
+			if (isChartJsWidget) {
+				chartJsData = chartjsCanvas.attr('data-chart') || '';
+				chartJsType = chartjsCanvas.attr('data-type') || '';
+			}
+
 			var callback = function(modalData){
 				var element = jQuery(modalData);
 				var modal= jQuery(".myModal",element);
@@ -585,8 +598,150 @@ Vtiger.Class("Vtiger_DashBoard_Js",{
 				modal.css('height','100%');
 				var modalWidgetContainer = jQuery('.fullscreenview');
 				modalWidgetContainer.find('.widgetData').val(data);
-				 if(chartType != ''){
-					//Chart report widget 
+
+				// Handle new Chart.js canvas-based widgets (from DashBoardWidgetContents.tpl)
+				if (isChartJsWidget && chartJsData) {
+					var fsCanvasId = 'chartjs_fullscreen_' + widgetId;
+					// Find a container in modal to place the canvas
+					var fsContainer = modalWidgetContainer.find('#chartDiv, .widgetChartContainer').first();
+					if (!fsContainer.length) {
+						fsContainer = modalWidgetContainer.find('.dashboardWidgetContent').first();
+					}
+					fsContainer.html('<canvas id="' + fsCanvasId + '" style="width:100%;height:100%;min-height:460px;display:block;"></canvas>');
+					(function renderFullscreenChartJs() {
+						if (typeof window.Chart === 'undefined') {
+							setTimeout(renderFullscreenChartJs, 80);
+							return;
+						}
+						var fsCanvas = document.getElementById(fsCanvasId);
+						if (!fsCanvas) return;
+
+						var rawData = null;
+						try {
+							rawData = JSON.parse(chartJsData);
+							if (typeof rawData === 'string') { rawData = JSON.parse(rawData); }
+						} catch(e) { return; }
+						if (!rawData) return;
+
+						var labels = [], values = [], links = [];
+						var isBar = false;
+
+						if (Array.isArray(rawData)) {
+							for (var i = 0; i < rawData.length; i++) {
+								var item = rawData[i];
+								if (typeof item[0] === 'number' || !isNaN(parseInt(item[0], 10))) {
+									values.push(parseInt(item[0], 10) || 0);
+									labels.push(item[1] || 'Unknown');
+								} else {
+									labels.push(item[0] || 'Unknown');
+									values.push(parseInt(item[1], 10) || 0);
+									isBar = true;
+								}
+								links.push(item['links'] || item['link'] || '');
+							}
+						} else if (typeof rawData === 'object') {
+							labels = rawData.labels || [];
+							var rawValues = rawData.values || [];
+							links = rawData.links || [];
+							for (var v = 0; v < rawValues.length; v++) {
+								if (Array.isArray(rawValues[v])) {
+									values.push(parseFloat(rawValues[v][0]) || 0);
+								} else {
+									values.push(parseFloat(rawValues[v]) || 0);
+								}
+							}
+						}
+
+						if (!labels.length || !values.length) return;
+
+						var existing = window.Chart.getChart(fsCanvas);
+						if (existing) { existing.destroy(); }
+
+						var type = 'bar', indexAxis = 'x';
+						if (chartJsType === 'pieChart' || chartJsType === 'pie') {
+							type = 'doughnut';
+						} else if (chartJsType === 'horizontalbarChart' || chartJsType === 'horizontalBar') {
+							type = 'bar'; indexAxis = 'y';
+						} else if (chartJsType === 'verticalbarChart' || chartJsType === 'verticalBar') {
+							type = 'bar'; indexAxis = 'x';
+						} else if (chartJsType === 'lineChart' || chartJsType === 'line') {
+							type = 'line'; indexAxis = 'x';
+						} else {
+							type = isBar ? 'bar' : 'doughnut';
+							if (isBar) indexAxis = 'y';
+						}
+
+						var isPieOrDoughnut = (type === 'doughnut' || type === 'pie');
+						var isLine = (type === 'line');
+						var palette = ['#6366f1','#22d3ee','#f59e0b','#10b981','#ef4444','#8b5cf6','#f43f5e','#0ea5e9','#84cc16','#fb923c','#a855f7','#06b6d4'];
+
+						var datasetConfig = {
+							label: rawData.graph_label || 'Report Data',
+							data: values,
+							backgroundColor: isPieOrDoughnut ? palette.slice(0, values.length) : (isLine ? 'rgba(99, 102, 241, 0.15)' : 'rgba(99,102,241,0.85)'),
+							borderColor: isPieOrDoughnut ? '#ffffff' : '#6366f1',
+							borderWidth: isLine ? 3 : (isPieOrDoughnut ? 2 : 1),
+							borderRadius: (type === 'bar') ? 4 : 0,
+							fill: isLine,
+							tension: isLine ? 0.35 : 0
+						};
+						if (isLine) {
+							datasetConfig.pointRadius = 5; datasetConfig.pointHoverRadius = 8;
+							datasetConfig.pointBackgroundColor = '#6366f1'; datasetConfig.pointBorderColor = '#ffffff'; datasetConfig.pointBorderWidth = 2;
+						}
+
+						var optionsConfig = {
+							responsive: true,
+							maintainAspectRatio: false,
+							layout: { padding: { bottom: 10, top: 4, left: 4, right: 8 } },
+							plugins: {
+								legend: { display: isPieOrDoughnut, position: 'bottom', labels: { padding: 12, font: { size: 13 }, usePointStyle: true } },
+								tooltip: {
+									callbacks: {
+										label: function(context) {
+											var val = context.raw !== undefined ? context.raw : context.formattedValue;
+											if (isPieOrDoughnut) {
+												var total = context.dataset.data.reduce(function(a, b) { return a + b; }, 0);
+												var pct = total > 0 ? Math.round((parseFloat(val) || 0) / total * 100) : 0;
+												return ' ' + val + ' (' + pct + '%)';
+											}
+											return ' ' + val;
+										}
+									}
+								}
+							}
+						};
+
+						if (!isPieOrDoughnut) {
+							optionsConfig.indexAxis = indexAxis;
+							optionsConfig.scales = {
+								x: { beginAtZero: true, ticks: { font: { size: 12 }, maxRotation: 30 }, grid: { color: 'rgba(0,0,0,0.05)' } },
+								y: { beginAtZero: true, ticks: { font: { size: 12 } }, grid: { color: 'rgba(0,0,0,0.05)' } }
+							};
+							if (indexAxis === 'y') { optionsConfig.scales.y.grid = { display: false }; }
+						} else {
+							optionsConfig.cutout = '60%';
+						}
+
+						var fsChart = new window.Chart(fsCanvas.getContext('2d'), {
+							type: type,
+							data: { labels: labels, datasets: [datasetConfig] },
+							options: optionsConfig
+						});
+
+						fsCanvas.style.cursor = 'pointer';
+						fsCanvas.onclick = function(evt) {
+							var pts = fsChart.getElementsAtEventForMode(evt, 'nearest', { intersect: true }, false);
+							if (pts.length && links[pts[0].index]) {
+								window.location.href = links[pts[0].index];
+							}
+						};
+					})();
+					return; // Skip old vtchart rendering path
+				}
+
+				if(chartType != ''){
+					//Chart report widget
 					var chartClassName = chartType.toCamelCase();
 					var chartClass = window["Report_"+chartClassName + "_Js"];
 					chartClass('Vtiger_ChartReportWidget_Widget_Js',{},{
@@ -594,9 +749,12 @@ Vtiger.Class("Vtiger_DashBoard_Js",{
 								this._super(modalWidgetContainer);
 							}
 					});
+					var widgetInstance = Vtiger_Widget_Js.getInstance(modalWidgetContainer, widgetName);
+					modalWidgetContainer.trigger(Vtiger_Widget_Js.widgetPostLoadEvent);
+				} else {
+					var widgetInstance = Vtiger_Widget_Js.getInstance(modalWidgetContainer, widgetName);
+					modalWidgetContainer.trigger(Vtiger_Widget_Js.widgetPostLoadEvent);
 				}
-				var widgetInstance = Vtiger_Widget_Js.getInstance(modalWidgetContainer, widgetName);
-				modalWidgetContainer.trigger(Vtiger_Widget_Js.widgetPostLoadEvent);
 			}
 			app.helper.showModal(fullscreenview,{"cb":callback});
 		});
