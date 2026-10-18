@@ -41,6 +41,7 @@ class HelpDesk_GetEngineerMobileNo_Action extends Vtiger_IndexAjax_View {
 			'success' => true,
 			'result' => array(
 				'mobile_no' => $engineerRecordModel->get('mobile_no'),
+				'state' => $engineerRecordModel->get('state'),
 			),
 		));
 		$response->emit();

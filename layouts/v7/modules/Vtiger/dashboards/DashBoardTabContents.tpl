@@ -21,21 +21,21 @@
 					{foreach from=$WIDGETS item=WIDGET name=count}
 						{assign var=WIDGETDOMID value=$WIDGET->get('linkid')}
 
-						{if $WIDGET->getName() eq 'MiniList'}
-							{assign var=WIDGETDOMID value=$WIDGET->get('linkid')|cat:'-':$WIDGET->get('widgetid')}
-						{elseif $WIDGET->getName() eq 'Notebook'}
+						{if $WIDGET->get('widgetid')}
 							{assign var=WIDGETDOMID value=$WIDGET->get('linkid')|cat:'-':$WIDGET->get('widgetid')}
 						{/if}
 						{if $WIDGETDOMID}
-							<li id="{$WIDGETDOMID}" {if $smarty.foreach.count.index % $COLUMNS == 0 and $smarty.foreach.count.index != 0} {assign var=ROWCOUNT value=$ROW+1} data-row="{$WIDGET->getPositionRow($ROWCOUNT)}" {else} data-row="{$WIDGET->getPositionRow($ROW)}" {/if}
-								{assign var=COLCOUNT value=($smarty.foreach.count.index % $COLUMNS)+1} data-col="{$WIDGET->getPositionCol($COLCOUNT)}" data-sizex="{$WIDGET->getSizeX()}" data-sizey="{$WIDGET->getSizeY()}" {if $WIDGET->get('position') eq ""} data-position="false"{/if}
+							{assign var=ROWCOUNT value=($smarty.foreach.count.index / $COLUMNS)|floor + 1}
+							{assign var=COLCOUNT value=($smarty.foreach.count.index % $COLUMNS) + 1}
+							<li id="{$WIDGETDOMID}" data-row="{$WIDGET->getPositionRow($ROWCOUNT)}" data-col="{$WIDGET->getPositionCol($COLCOUNT)}" data-sizex="{$WIDGET->getSizeX()}" data-sizey="{$WIDGET->getSizeY()}" {if $WIDGET->get('position') eq ""} data-position="false"{/if}
 								class="dashboardWidget dashboardWidget_{$smarty.foreach.count.index}" data-url="{$WIDGET->getUrl()}" data-mode="open" data-name="{$WIDGET->getName()}">
 							</li>
 						{else}
 							{assign var=CHARTWIDGETDOMID value=$WIDGET->get('reportid')}
 							{assign var=WIDGETID value=$WIDGET->get('id')}
-							<li id="{$CHARTWIDGETDOMID}-{$WIDGETID}" {if $smarty.foreach.count.index % $COLUMNS == 0 and $smarty.foreach.count.index != 0} {assign var=ROWCOUNT value=$ROW+1} data-row="{$WIDGET->getPositionRow($ROWCOUNT)}" {else} data-row="{$WIDGET->getPositionRow($ROW)}" {/if}
-								{assign var=COLCOUNT value=($smarty.foreach.count.index % $COLUMNS)+1} data-col="{$WIDGET->getPositionCol($COLCOUNT)}" data-sizex="{$WIDGET->getSizeX()}" data-sizey="{$WIDGET->getSizeY()}" {if $WIDGET->get('position') eq ""} data-position="false"{/if}
+							{assign var=ROWCOUNT value=($smarty.foreach.count.index / $COLUMNS)|floor + 1}
+							{assign var=COLCOUNT value=($smarty.foreach.count.index % $COLUMNS) + 1}
+							<li id="{$CHARTWIDGETDOMID}-{$WIDGETID}" data-row="{$WIDGET->getPositionRow($ROWCOUNT)}" data-col="{$WIDGET->getPositionCol($COLCOUNT)}" data-sizex="{$WIDGET->getSizeX()}" data-sizey="{$WIDGET->getSizeY()}" {if $WIDGET->get('position') eq ""} data-position="false"{/if}
 								class="dashboardWidget dashboardWidget_{$smarty.foreach.count.index}" data-url="{$WIDGET->getUrl()}" data-mode="open" data-name="ChartReportWidget"> 
 							</li>
 						{/if}

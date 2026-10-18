@@ -111,6 +111,29 @@ class Mobile_WS_UploadAttachment extends Mobile_WS_Controller {
         }
 
         if (!empty($responseData)) {
+            $closingLatitude = $request->get('closing_latitude');
+            $closingLongitude = $request->get('closing_longitude');
+            $closingComment = $request->get('commment');
+            $hasClosingLatitude = ($closingLatitude !== '' && $closingLatitude !== null);
+            $hasClosingLongitude = ($closingLongitude !== '' && $closingLongitude !== null);
+            $hasClosingComment = ($closingComment !== '' && $closingComment !== null);
+            if ($hasClosingLatitude || $hasClosingLongitude || $hasClosingComment) {
+                $ticketRecordModel = Vtiger_Record_Model::getInstanceById($recordId, 'Tickets');
+                if ($ticketRecordModel) {
+                    $ticketRecordModel->set('mode', 'edit');
+                    if ($hasClosingLatitude) {
+                        $ticketRecordModel->set('closing_latitude', $closingLatitude);
+                    }
+                    if ($hasClosingLongitude) {
+                        $ticketRecordModel->set('closing_longitude', $closingLongitude);
+                    }
+                    if ($hasClosingComment) {
+                        $ticketRecordModel->set('closing_comment', $closingComment);
+                    }
+                    $ticketRecordModel->save();
+                }
+            }
+
             $response->setResult(['uploadedDocuments' => $responseData]);
             $response->setApiSucessMessage('Successfully Uploaded Files');
         } else {

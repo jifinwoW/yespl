@@ -1610,3 +1610,117 @@ a.button.big {
 .btn:active {
     box-shadow: none !important;
 }
+
+/* ============================================================
+   STAT TILE — Clean white KPI widget cards
+   All white background, works with standard vtiger drag + remove
+   ============================================================ */
+
+/* dashboardWidgetContent padding reset for tiles — let card fill the space */
+.stattile-content {
+    padding: 8px !important;
+}
+
+/* ---- The Card ---- */
+a.stattile-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+    min-height: 100px;
+    padding: 14px 16px 12px;
+    background: #ffffff;
+    border-radius: 6px;
+    border: 1px solid #f0f1f3;
+    text-decoration: none !important;
+    color: #111827 !important;
+    cursor: pointer;
+    transition: box-shadow 0.18s ease;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+a.stattile-card:hover {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    border-color: #e5e7eb;
+    text-decoration: none !important;
+    color: #111827 !important;
+}
+
+/* ---- Top row: label + ↗ arrow ---- */
+.stattile-card__top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 8px;
+}
+
+.stattile-card__label {
+    font-size: 13px;
+    font-weight: 500;
+    color: #6b7280;
+    line-height: 1.3;
+    flex: 1;
+    padding-right: 8px;
+}
+
+/* Circular arrow — top right */
+.stattile-card__arrow {
+    width: 24px;
+    height: 24px;
+    min-width: 24px;
+    border-radius: 50%;
+    border: 1.5px solid #e5e7eb;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 9px;
+    color: #9ca3af;
+    flex-shrink: 0;
+    transition: border-color 0.15s, color 0.15s;
+}
+
+a.stattile-card:hover .stattile-card__arrow {
+    border-color: #9ca3af;
+    color: #374151;
+}
+
+/* ---- Big count number ---- */
+.stattile-card__count {
+    font-size: 38px;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -1.5px;
+    color: #111827;
+    margin-bottom: 10px;
+    font-variant-numeric: tabular-nums;
+    animation: stattile-slidein 0.3s ease forwards;
+}
+
+@keyframes stattile-slidein {
+    from { opacity: 0; transform: translateY(5px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ---- Bottom row: icon + subtitle ---- */
+.stattile-card__bottom {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.stattile-card__trend-icon {
+    font-size: 12px;
+    color: #9ca3af;
+    flex-shrink: 0;
+}
+
+.stattile-card__trend-text {
+    font-size: 12px;
+    color: #9ca3af;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+

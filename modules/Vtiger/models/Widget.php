@@ -114,10 +114,18 @@ class Vtiger_Widget_Model extends Vtiger_Base_Model {
 			preg_match('/name=[a-zA-Z]+/', $linkUrl, $matches);
 			$matches = explode('=', $matches[0]);
 			$widgetName = $matches[1];
+			// For widgets that share the same 'name' but have a tiletype parameter
+			// (e.g. StatTile with tiletype=engineers), append the tiletype so
+			// each tile gets a unique name. This prevents the Add Widget dropdown
+			// from hiding all same-name tiles when only one is added.
+			if (preg_match('/[?&]tiletype=([a-zA-Z0-9_]+)/', $linkUrl, $tileMatches)) {
+				$widgetName .= '_' . $tileMatches[1];
+			}
 			$this->set('name', $widgetName);
 		}
 		return $widgetName;
 	}
+
 	/**
 	 * Function to get the instance of Vtiger Widget Model from the given array of key-value mapping
 	 * @param <Array> $valueMap

@@ -363,15 +363,27 @@ Vtiger.Class("Vtiger_DashBoard_Js",{
 			}
 			return -1;
 		});
-		jQuery.each(items , function (i, e) {
+		var positionedItems = [];
+		var unpositionedItems = [];
+		jQuery.each(items, function(i, e) {
 			var item = $(this);
+			if (item.attr("data-position") == "false") {
+				unpositionedItems.push(item);
+			} else {
+				positionedItems.push(item);
+			}
+		});
+
+		jQuery.each(positionedItems, function(i, item) {
 			var columns = parseInt(item.attr("data-sizex")) > cols ? cols : parseInt(item.attr("data-sizex"));
 			var rows = parseInt(item.attr("data-sizey"));
-			if(item.attr("data-position")=="false"){
-				Vtiger_DashBoard_Js.gridster.add_widget(item, columns, rows);
-			} else {
-				Vtiger_DashBoard_Js.gridster.add_widget(item, columns, rows);
-			}
+			Vtiger_DashBoard_Js.gridster.add_widget(item, columns, rows, parseInt(item.attr("data-col")), parseInt(item.attr("data-row")));
+		});
+
+		jQuery.each(unpositionedItems, function(i, item) {
+			var columns = parseInt(item.attr("data-sizex")) > cols ? cols : parseInt(item.attr("data-sizex"));
+			var rows = parseInt(item.attr("data-sizey"));
+			Vtiger_DashBoard_Js.gridster.add_widget(item, columns, rows);
 		});
 		//used when after gridster is loaded
 		thisInstance.savePositions(activeGridster.find('.dashboardWidget'));
@@ -381,8 +393,15 @@ Vtiger.Class("Vtiger_DashBoard_Js",{
 		var widgetRowColPositions = {}
 		for (var index=0, len = widgets.length; index < len; ++index) {
 			var widget = jQuery(widgets[index]);
+			var domEl = widget.get(0);
+			var row = (domEl && domEl.dataset && domEl.dataset.row) ? domEl.dataset.row : (widget.data('row') || widget.attr('data-row'));
+			var col = (domEl && domEl.dataset && domEl.dataset.col) ? domEl.dataset.col : (widget.data('col') || widget.attr('data-col'));
+
+			widget.attr('data-row', row);
+			widget.attr('data-col', col);
+
 			widgetRowColPositions[widget.attr('id')] = JSON.stringify({
-					row: widget.attr('data-row'), col: widget.attr('data-col')
+					row: String(row), col: String(col)
 			});
 		}
 		var params = {

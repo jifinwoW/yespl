@@ -13,16 +13,66 @@ Vtiger_Edit_Js("HelpDesk_Edit_Js", {}, {
 		this._super(container);
 		this.registerInstallationDateAutoPopulateEvent(container);
 		this.registerEngineerSelectionEvent(container);
+		this.registerCustomerSelectionEvent(container);
 		this.registerGyroEvent(container);
 		this.registerUpsEvent(container);
 	},
 
+	registerCustomerSelectionEvent: function(container) {
+		var thisInstance = this;
+		// Active form field is contact_id (customer_id is presence=2 / hidden)
+		var customerRefFields = container.find('input[name="contact_id"], input[name="customer_id"]');
+		customerRefFields.on(Vtiger_Edit_Js.referenceSelectionEvent, function(e, data) {
+			thisInstance.populateCustomerPhone(data, container);
+		});
+		customerRefFields.on(Vtiger_Edit_Js.referenceDeSelectionEvent, function() {
+			thisInstance.clearCustomerPhone(container);
+		});
+	},
+
+	populateCustomerPhone: function(data, container) {
+		var thisInstance = this;
+		if (!data || !data.record) {
+			return;
+		}
+
+		app.request.get({
+			url: 'index.php',
+			data: {
+				module: 'HelpDesk',
+				action: 'GetContactPhone',
+				record: data.record,
+				source_module: data.source_module || 'Contacts'
+			}
+		}).then(function(error, response) {
+			if (error !== null || !response || response.success !== true) {
+				return;
+			}
+			var phone = (response.result && response.result.phone) ? response.result.phone : '';
+			// Active field is contact_mobileno; customer_number is presence=2 / hidden
+			var phoneFields = container.find('[name="contact_mobileno"], [name="customer_number"]');
+			if (phoneFields.length) {
+				phoneFields.val(phone).trigger('change');
+			}
+		}, function() {});
+	},
+
+	clearCustomerPhone: function(container) {
+		var phoneFields = container.find('[name="contact_mobileno"], [name="customer_number"]');
+		if (!phoneFields.length) {
+			return;
+		}
+		phoneFields.val('').trigger('change');
+	},
+
 	registerEngineerSelectionEvent: function(container) {
 		var thisInstance = this;
-		container.find('input[name="engineer_id"]').on(Vtiger_Edit_Js.referenceSelectionEvent, function(e, data) {
+		// Active form field is engineer_id (engineer_name is presence=2 / hidden)
+		var engineerRefFields = container.find('input[name="engineer_id"], input[name="engineer_name"]');
+		engineerRefFields.on(Vtiger_Edit_Js.referenceSelectionEvent, function(e, data) {
 			thisInstance.populateEngineerMobileNo(data, container);
 		});
-		container.find('input[name="engineer_id"]').on(Vtiger_Edit_Js.referenceDeSelectionEvent, function() {
+		engineerRefFields.on(Vtiger_Edit_Js.referenceDeSelectionEvent, function() {
 			thisInstance.clearEngineerMobileNo(container);
 		});
 	},
@@ -39,25 +89,36 @@ Vtiger_Edit_Js("HelpDesk_Edit_Js", {}, {
 				module: 'HelpDesk',
 				action: 'GetEngineerMobileNo',
 				record: data.record,
-				source_module: data.source_module
+				source_module: data.source_module || 'Engineer'
 			}
 		}).then(function(error, response) {
 			if (error !== null || !response || response.success !== true) {
 				return;
 			}
-			var mobileField = container.find('[name="eng_mobileno"]');
-			if (mobileField.length) {
-				mobileField.val(response.result.mobile_no).trigger('change');
+			var result = response.result || {};
+			var mobileNo = result.mobile_no ? result.mobile_no : '';
+			var state = result.state ? result.state : '';
+			// Active field is eng_mobileno; engineer_number is presence=2 / hidden
+			var mobileFields = container.find('[name="eng_mobileno"], [name="engineer_number"]');
+			if (mobileFields.length) {
+				mobileFields.val(mobileNo).trigger('change');
+			}
+			var locationFields = container.find('[name="engineer_service_location"]');
+			if (locationFields.length) {
+				locationFields.val(state).trigger('change');
 			}
 		}, function() {});
 	},
 
 	clearEngineerMobileNo: function(container) {
-		var mobileField = container.find('[name="eng_mobileno"]');
-		if (!mobileField.length) {
-			return;
+		var mobileFields = container.find('[name="eng_mobileno"], [name="engineer_number"]');
+		if (mobileFields.length) {
+			mobileFields.val('').trigger('change');
 		}
-		mobileField.val('').trigger('change');
+		var locationFields = container.find('[name="engineer_service_location"]');
+		if (locationFields.length) {
+			locationFields.val('').trigger('change');
+		}
 	},
 
 	registerInstallationDateAutoPopulateEvent: function(container) {
