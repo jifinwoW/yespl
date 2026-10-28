@@ -6,7 +6,7 @@
 * All Rights Reserved.
 * ****************************************************************************** *}
 
-<div class="contents tabbable ui-sortable">
+<div class="contents tabbable ui-sortable" style="margin-top:25px">
 
 
     <form class="form-horizontal recordEditView" id="EditView" name="EditView" method="post" action="index.php" enctype="multipart/form-data">
@@ -634,7 +634,7 @@
 
         var $el = jQuery('.edit-template-content');
         var $window = jQuery(window);
-        var top = 127;
+        var top = 172;
 
         $window.bind("scroll resize", function() {
 

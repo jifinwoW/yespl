@@ -79,7 +79,7 @@ $languageStrings = array(
 
   'LBL_UPLOAD_TO' => 'Ladda Upp Till',
   'LBL_NEW_DOCUMENT' => 'Nya Dokument',
-  'LBL_VTIGER' => 'Vtiger',
+  'LBL_VTIGER' => 'Yespl',
   'LBL_CREATE_YOUR_OWN' => 'Skapa din egen',
   'LBL_SHARE_DOCUMENT' => 'Dela ett Dokument',
   'LBL_UPLOAD_TO_VTIGER' => 'Ladda upp Dokument för att Vtiger',

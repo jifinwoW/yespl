@@ -120,6 +120,16 @@ class PDFMaker_PDFMaker_Model extends Vtiger_Module_Model {
         $body_html = $pdf_content["body"];
         $footer_html = $pdf_content["footer"];
 
+        $name = $this->GenerateName($record, $module);
+        $name = str_replace(array(' ', '/', ','), array('-', '-', '-'), $name);
+
+        // pdf2htmlEX templates (a PDF pasted into the editor) only render in a browser.
+        // mPDF drops their embedded fonts and absolute layout, so text spills onto extra pages.
+        if ($this->isPdf2HtmlExBody($body_html)) {
+            $mpdf = new PDFMaker_PrebuiltPDF($this->renderPdf2HtmlEx($body_html, $header_html));
+            return $name;
+        }
+
         // we need to set orientation for mPDF constructor in case of Custom format (array(width, length)) as well as we need to
         // set orientation for <pagebreak ... /> contruction
         if ($Settings["orientation"] == "landscape"){
@@ -149,10 +159,198 @@ class PDFMaker_PDFMaker_Model extends Vtiger_Module_Model {
         @$mpdf->SetHTMLFooter($footer_html);
         @$mpdf->WriteHTML($body_html);
 
-        $name = $this->GenerateName($record, $module);
-
-        $name = str_replace(array(' ', '/', ','), array('-', '-', '-'), $name);
         return $name;
+    }
+
+    public function isPdf2HtmlExBody($html) {
+        return stripos($html, 'pdf2htmlEX') !== false;
+    }
+
+    /**
+     * Print a pdf2htmlEX template to a single A4 PDF via headless Chrome.
+     * The print stylesheet is 4/3 of A4 (pdf2htmlEX's Chrome DPI compensation), so scale it back.
+     * The PDFMaker header sits above the page and the invoice is scaled to the space that remains.
+     */
+    public function renderPdf2HtmlEx($html, $headerHtml = '') {
+        $pageWidth = 793.333333;
+        $pageHeight = 1122.666667;
+        if (preg_match('/\.w0\{width:\s*([0-9.]+)pt/', $html, $match) && floatval($match[1]) > 0) {
+            $pageWidth = floatval($match[1]);
+        }
+        if (preg_match('/\.h0\{height:\s*([0-9.]+)pt/', $html, $match) && floatval($match[1]) > 0) {
+            $pageHeight = floatval($match[1]);
+        }
+
+        $headerInner = $this->extractHtmlFragment($headerHtml);
+        $marginMm = 6;
+        $headerMm = ($headerInner === '') ? 0 : 18;
+        $gapMm = ($headerInner === '') ? 0 : 2;
+        $availableWidthPt = (210 - (2 * $marginMm)) / 25.4 * 72;
+        $availableHeightPt = (297 - (2 * $marginMm) - $headerMm - $gapMm) / 25.4 * 72;
+        $scale = round(min($availableWidthPt / $pageWidth, $availableHeightPt / $pageHeight), 4);
+        $containerWidthMm = round(210 - (2 * $marginMm), 2);
+        $containerHeightMm = round($pageHeight * $scale / 72 * 25.4, 2);
+
+        $fitCss = '<style id="pdfmaker-print-fit">@media print{'
+            . '@page{size:A4;margin:' . $marginMm . 'mm}'
+            . 'html,body{margin:0!important;padding:0!important;background:#fff!important;height:' . round(297 - (2 * $marginMm), 2) . 'mm;overflow:hidden!important}'
+            . '#sidebar,.loading-indicator{display:none!important}'
+            . '#pdfmaker-header{position:relative;width:100%;height:' . $headerMm . 'mm;overflow:hidden;margin:0 0 ' . $gapMm . 'mm 0}'
+            . '#pdfmaker-header table{width:100%;border-collapse:collapse}'
+            . '#pdfmaker-header td{vertical-align:middle}'
+            . '#pdfmaker-header img{max-height:14mm;width:auto}'
+            . '#pdfmaker-header h1,#pdfmaker-header span{font-size:13pt!important;line-height:1.1!important;font-weight:bold}'
+            . '#pdfmaker-header h1{margin:0}'
+            . '#page-container{position:relative!important;top:auto!important;left:auto!important;right:auto!important;bottom:auto!important;margin:0!important;width:' . $containerWidthMm . 'mm!important;height:' . $containerHeightMm . 'mm!important;overflow:hidden!important;background:#fff!important}'
+            . '.pf{margin:0!important;box-shadow:none!important;transform:scale(' . $scale . ');transform-origin:top left}'
+            . '}</style>';
+
+        if (stripos($html, '</head>') !== false) {
+            $html = preg_replace('/<\/head>/i', $fitCss . '</head>', $html, 1);
+        } else {
+            $html = $fitCss . $html;
+        }
+
+        if ($headerInner !== '') {
+            $headerBlock = '<div id="pdfmaker-header">' . $headerInner . '</div>';
+            $replaced = preg_replace('/<body[^>]*>/i', '$0' . $headerBlock, $html, 1, $count);
+            $html = ($count > 0) ? $replaced : $headerBlock . $html;
+        }
+
+        $chrome = $this->findChromeBinary();
+        if ($chrome === '') {
+            throw new Exception('Invoice PDF template needs Google Chrome to render, and Chrome was not found.');
+        }
+
+        $tmpBase = tempnam(sys_get_temp_dir(), 'pdfmaker_');
+        $htmlFile = $tmpBase . '.html';
+        $pdfFile = $tmpBase . '.pdf';
+        $logFile = $tmpBase . '.log';
+        $profile = $tmpBase . '.profile';
+        $copiedImages = array();
+        $html = $this->localizeImages($html, dirname($htmlFile), $copiedImages);
+        file_put_contents($htmlFile, $html);
+
+        $command = 'timeout 25 ' . escapeshellarg($chrome)
+            . ' --headless=new --disable-gpu --no-sandbox --disable-dev-shm-usage --no-pdf-header-footer'
+            . ' --no-first-run --disable-extensions --disable-background-networking'
+            . ' --ozone-platform=headless --virtual-time-budget=8000 --run-all-compositor-stages-before-draw'
+            . ' --user-data-dir=' . escapeshellarg($profile)
+            . ' --print-to-pdf=' . escapeshellarg($pdfFile)
+            . ' ' . escapeshellarg('file://' . $htmlFile)
+            . ' >' . escapeshellarg($logFile) . ' 2>&1';
+
+        $exitCode = 0;
+        $output = array();
+        exec($command, $output, $exitCode);
+
+        $pdf = (is_file($pdfFile) && filesize($pdfFile) > 0) ? file_get_contents($pdfFile) : '';
+        $this->removePath($htmlFile);
+        $this->removePath($pdfFile);
+        $this->removePath($logFile);
+        $this->removePath($profile);
+        $this->removePath($tmpBase);
+        foreach ($copiedImages as $copiedImage) {
+            $this->removePath($copiedImage);
+        }
+
+        if ($pdf === '') {
+            throw new Exception('Could not render the PDF template (Chrome exit ' . intval($exitCode) . ').');
+        }
+
+        return $pdf;
+    }
+
+    private function extractHtmlFragment($html) {
+        $html = trim($html);
+        if ($html === '') {
+            return '';
+        }
+        $html = preg_replace('/<grammarly-desktop-integration\b[^>]*>.*?<\/grammarly-desktop-integration>/is', '', $html);
+        if (preg_match('/<body[^>]*>(.*)<\/body>/is', $html, $match)) {
+            $html = $match[1];
+        }
+        return trim($html);
+    }
+
+    private function localizeImages($html, $directory, &$copied) {
+        $root = rtrim((string) vglobal('root_directory'), '/');
+        return preg_replace_callback('/src=(["\'])([^"\']+)\1/i', function ($matches) use ($directory, &$copied, $root) {
+            $path = $this->imageSourceToLocalPath(html_entity_decode($matches[2]), $root);
+            if ($path === '') {
+                return $matches[0];
+            }
+            $name = 'img_' . md5($path) . '_' . basename($path);
+            $target = $directory . '/' . $name;
+            if (!copy($path, $target)) {
+                return $matches[0];
+            }
+            $copied[] = $target;
+            return 'src=' . $matches[1] . $name . $matches[1];
+        }, $html);
+    }
+
+    private function imageSourceToLocalPath($src, $root) {
+        if (stripos($src, 'data:') === 0) {
+            return '';
+        }
+        if (preg_match('#^https?://#i', $src)) {
+            $urlPath = parse_url($src, PHP_URL_PATH);
+            $urlPath = is_string($urlPath) ? preg_replace('#/+#', '/', $urlPath) : '';
+            if ($root !== '' && $urlPath !== '') {
+                $candidate = $root . '/' . ltrim($urlPath, '/');
+                if (is_file($candidate)) {
+                    return $candidate;
+                }
+            }
+            return '';
+        }
+        $path = $src;
+        if (strpos($path, 'file://') === 0) {
+            $path = substr($path, 7);
+        }
+        if ($path !== '' && $path[0] === '/' && is_file($path)) {
+            return $path;
+        }
+        if ($root !== '' && $path !== '') {
+            $candidate = $root . '/' . ltrim($path, '/');
+            if (is_file($candidate)) {
+                return $candidate;
+            }
+        }
+        return '';
+    }
+
+    private function findChromeBinary() {
+        $candidates = array(
+            '/usr/bin/google-chrome',
+            '/usr/bin/google-chrome-stable',
+            '/usr/bin/chromium',
+            '/usr/bin/chromium-browser',
+        );
+        foreach ($candidates as $candidate) {
+            if (is_executable($candidate)) {
+                return $candidate;
+            }
+        }
+        return '';
+    }
+
+    private function removePath($path) {
+        if (is_dir($path)) {
+            $items = scandir($path);
+            if (is_array($items)) {
+                foreach ($items as $item) {
+                    if ($item === '.' || $item === '..') {
+                        continue;
+                    }
+                    $this->removePath($path . '/' . $item);
+                }
+            }
+            @rmdir($path);
+        } elseif (is_file($path)) {
+            @unlink($path);
+        }
     }
 
     public function GenerateName($record, $module) {
@@ -452,5 +650,28 @@ class PDFMaker_PDFMaker_Model extends Vtiger_Module_Model {
         if (!empty($file)) {
             require_once $file;
         }
+    }
+}
+
+/**
+ * Stand-in for mPDF when the PDF bytes were already produced (headless Chrome).
+ * Callers still use AutoPrint() and Output('', 'S').
+ */
+class PDFMaker_PrebuiltPDF {
+    private $content;
+
+    public function __construct($content) {
+        $this->content = $content;
+    }
+
+    public function AutoPrint($flag = true) {
+    }
+
+    public function Output($name = '', $dest = '') {
+        if ($dest === 'F' && $name !== '') {
+            file_put_contents($name, $this->content);
+            return '';
+        }
+        return $this->content;
     }
 }
