@@ -25,10 +25,10 @@
 					<button class="btn addButton btn-sm btn-default createActivity toDotask textOverflowEllipsis max-width-100" title="{vtranslate('LBL_ADD_TASK',$MODULE_NAME)}" type="button" href="javascript:void(0)" data-url="sourceModule={$RECORD->getModuleName()}&sourceRecord={$RECORD->getId()}&relationOperation=true" >
 						<i class="fa fa-plus"></i>&nbsp;&nbsp;{vtranslate('LBL_ADD_TASK',$MODULE_NAME)}
 					</button>&nbsp;&nbsp;
-					<!--<button class="btn addButton btn-sm btn-default createActivity textOverflowEllipsis max-width-100" title="{vtranslate('LBL_ADD_EVENT',$MODULE_NAME)}" data-name="Events"
+					<button class="btn addButton btn-sm btn-default createActivity textOverflowEllipsis max-width-100" title="{vtranslate('LBL_ADD_EVENT',$MODULE_NAME)}" data-name="Events"
 							data-url="index.php?module=Events&view=QuickCreateAjax" href="javascript:void(0)" type="button">
 						<i class="fa fa-plus"></i>&nbsp;&nbsp;{vtranslate('LBL_ADD_EVENT',$MODULE_NAME)}
-					</button>-->
+					</button>
 				{/if}
 			</div>
 			{assign var=SOURCE_MODEL value=$RECORD}
